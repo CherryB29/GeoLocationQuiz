@@ -359,7 +359,7 @@
             <!-- Answer Area (Text Input) -->
             <div id="input-text" class="hidden flex-col gap-3 mx-4 lg:mx-0 mb-4">
                 <input type="text" id="text-answer" placeholder="국가 이름을 입력하세요" class="w-full px-4 py-3.5 rounded-xl border border-toss-border bg-toss-bg focus:outline-none focus:border-toss-blue focus:ring-1 focus:ring-toss-blue transition font-medium text-lg text-center" autocomplete="off">
-                <button id="btn-submit-text" onclick="submitTextAnswer()" class="btn btn-primary w-full py-3.5 text-lg">정답 확인</button>
+                <button id="btn-submit-text" onclick="submitTextAnswer()" class="btn btn-primary w-full py-3.5 text-lg">정답 제츨</button>
             </div>
 
             <!-- Actions Area -->
@@ -676,7 +676,7 @@
             
             const btnConfirm = document.getElementById('modal-confirm');
             btnConfirm.textContent = confirmText;
-            btnConfirm.className = `btn btn-primary flex-1 py-3 text-base ${confirmClass}`;
+            btnConfirm.className = `btn btn-primary flex-1 py-3 text-base `;
             
             overlay.classList.add('active');
 
@@ -808,7 +808,7 @@
             gameState.tries = 3;
             gameState.answered = false;
 
-            document.getElementById('game-progress').textContent = `${gameState.round + 1} / ${gameState.maxRounds}`;
+            document.getElementById('game-progress').textContent = ` / `;
             document.getElementById('btn-next').classList.add('hidden');
             document.getElementById('btn-giveup').classList.remove('hidden');
             
@@ -828,7 +828,7 @@
             const lngDir = gameState.displayedLng >= 0 ? 'E' : 'W';
             
             document.getElementById('game-coords').textContent = 
-                `${Math.abs(gameState.displayedLat)}° ${latDir}, ${Math.abs(gameState.displayedLng)}° ${lngDir}`;
+                `° , ° `;
 
             // Setup Inputs
             if (settings.multiChoice) {
@@ -870,7 +870,7 @@
 
             if (selectedName === gameState.currentQ.name) {
                 gameState.score += 10;
-                document.getElementById('game-score').textContent = `${gameState.score}점`;
+                document.getElementById('game-score').textContent = `점`;
                 btn.classList.remove('btn-secondary');
                 btn.classList.add('bg-toss-green', 'text-white', 'border-transparent');
                 showToast('🎉 정답입니다! (+10점)');
@@ -884,7 +884,7 @@
                 saveReviewNote(selectedName);
 
                 if (gameState.tries > 0) {
-                    showToast(`❌ 오답입니다! 남은 기회: ${gameState.tries}회`);
+                    showToast(`❌ 오답입니다! 남은 기회: 회`);
                 } else {
                     showToast('❌ 기회를 모두 사용하셨습니다.');
                     revealAnswer();
@@ -917,7 +917,7 @@
 
             if (isCorrect) {
                 gameState.score += 10;
-                document.getElementById('game-score').textContent = `${gameState.score}점`;
+                document.getElementById('game-score').textContent = `점`;
                 showToast('🎉 정답입니다! (+10점)');
                 revealAnswer();
             } else {
@@ -925,7 +925,7 @@
                 saveReviewNote(userVal);
 
                 if (gameState.tries > 0) {
-                    showToast(`❌ 오답입니다! 남은 기회: ${gameState.tries}회`);
+                    showToast(`❌ 오답입니다! 남은 기회: 회`);
                     input.value = '';
                     input.focus();
                 } else {
@@ -961,7 +961,7 @@
                 });
             } else {
                 document.getElementById('text-answer').disabled = true;
-                document.getElementById('text-answer').value = `정답: ${gameState.currentQ.name}`;
+                document.getElementById('text-answer').value = `정답: `;
                 document.getElementById('text-answer').classList.add('text-toss-green');
                 document.getElementById('btn-submit-text').disabled = true;
             }
@@ -980,7 +980,7 @@
                 
                 const popupContent = `
                     <div class="text-center">
-                        <strong class="text-lg">${gameState.currentQ.name}</strong><br>
+                        <strong class="text-lg"></strong><br>
                         <span class="text-xs text-gray-500">정답 위치</span>
                     </div>
                 `;
@@ -999,7 +999,7 @@
         }
 
         function endGame() {
-            document.getElementById('result-score').textContent = `${gameState.score}점`;
+            document.getElementById('result-score').textContent = `점`;
             document.getElementById('result-correct').textContent = (gameState.score / 10);
             showScreen('screen-result');
         }
@@ -1007,7 +1007,7 @@
         function saveReviewNote(wrongInput) {
             let notes = JSON.parse(localStorage.getItem('geoGuessNotes') || '[]');
             const dateStr = new Date().toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
-            const coordsStr = `${Math.abs(gameState.displayedLat)}°${gameState.displayedLat>=0?'N':'S'}, ${Math.abs(gameState.displayedLng)}°${gameState.displayedLng>=0?'E':'W'}`;
+            const coordsStr = `°'S', °'W'`;
 
             // 동일한 국가의 오답 기록이 이미 있는지 확인
             const existingIndex = notes.findIndex(n => n.correctName === gameState.currentQ.name);
@@ -1069,7 +1069,7 @@
             notes.forEach(n => {
                 const count = n.count || 1;
                 const countBadge = count > 1 
-                    ? `<span class="bg-red-100 text-toss-red font-bold text-xs px-2.5 py-1 rounded-full border border-red-200 shrink-0">${count}회 틀림</span>` 
+                    ? `<span class="bg-red-100 text-toss-red font-bold text-xs px-2.5 py-1 rounded-full border border-red-200 shrink-0">회 틀림</span>` 
                     : '';
 
                 const item = document.createElement('div');
@@ -1077,15 +1077,15 @@
                 item.innerHTML = `
                     <div>
                         <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-toss-text text-lg">${n.correctName}</span>
-                            <span class="text-xs text-toss-subtext">${n.date}</span>
+                            <span class="font-bold text-toss-text text-lg"></span>
+                            <span class="text-xs text-toss-subtext"></span>
                         </div>
-                        <p class="text-sm text-toss-subtext mb-1">문제 좌표: ${n.displayedCoords}</p>
-                        <p class="text-sm font-semibold text-toss-red">나의 답: ${n.wrongInput}</p>
+                        <p class="text-sm text-toss-subtext mb-1">문제 좌표: </p>
+                        <p class="text-sm font-semibold text-toss-red">나의 답: </p>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        ${countBadge}
-                        <button class="w-10 h-10 rounded-full bg-toss-bg text-toss-blue hover:bg-blue-100 transition flex justify-center items-center shrink-0" onclick="viewMap(${n.lat}, ${n.lng})">
+                        
+                        <button class="w-10 h-10 rounded-full bg-toss-bg text-toss-blue hover:bg-blue-100 transition flex justify-center items-center shrink-0" onclick="viewMap(, )">
                             <i class="fa-solid fa-map-location-dot"></i>
                         </button>
                     </div>
@@ -1179,16 +1179,16 @@
 
             try {
                 // Nominatim Reverse Geocoding API (Free, needs accept-language)
-                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=3&accept-language=ko`);
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=&lon=&zoom=3&accept-language=ko`);
                 if (!response.ok) throw new Error('API Error');
                 
                 const data = await response.json();
                 
                 if (data && data.address && data.address.country) {
-                    resultText.textContent = `📍 검색 결과: ${data.address.country}`;
+                    resultText.textContent = `📍 검색 결과: `;
                     resultText.className = "mt-3 font-bold text-center text-lg text-toss-green min-h-[28px]";
                 } else if (data && data.name) {
-                     resultText.textContent = `📍 검색 결과: ${data.name} (국가 정보 없음)`;
+                     resultText.textContent = `📍 검색 결과:  (국가 정보 없음)`;
                      resultText.className = "mt-3 font-bold text-center text-lg text-toss-subtext min-h-[28px]";
                 } else {
                     resultText.textContent = "🌊 바다 또는 알 수 없는 지역입니다.";
