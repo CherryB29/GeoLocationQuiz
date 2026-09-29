@@ -187,23 +187,6 @@
         #review-map {
             height: 100%;
         }
-        .crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-            z-index: 1000;
-        }
-        .crosshair::before, .crosshair::after {
-            content: '';
-            position: absolute;
-            background-color: var(--toss-red);
-        }
-        .crosshair::before { top: 0; bottom: 0; left: 9px; right: 9px; }
-        .crosshair::after { left: 0; right: 0; top: 9px; bottom: 9px; }
 
         @media (min-width: 1024px) {
             #screen-game.active {
@@ -445,9 +428,8 @@
                 </div>
                 <button onclick="searchLocation()" class="btn btn-primary w-full py-3 mb-4 text-sm"><i class="fa-solid fa-satellite-dish mr-2"></i>검색하기</button>
                 
-                <div id="review-map-container" class="w-full rounded-xl overflow-hidden border border-toss-border shadow-sm hidden">
+                <div id="review-map-container" class="w-full rounded-xl overflow-hidden border border-toss-border shadow-sm">
                     <div id="review-map"></div>
-                    <div class="crosshair"></div>
                 </div>
                 <div id="search-result-text" class="mt-3 font-bold text-center text-lg text-toss-blue min-h-[28px]"></div>
             </div>
@@ -537,6 +519,7 @@
 
         let gameMap, gameMarker;
         let reviewMap, reviewMarker;
+        let crosshairLines = [];
 
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => {
@@ -628,18 +611,33 @@
             }).setView([20, 0], 2);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
+                attribution: '&copy; OpenStreetMap contributors',
+                keepBuffer: 12,
+                updateWhenIdle: false
             }).addTo(gameMap);
             gameMarker = L.marker([0, 0]).addTo(gameMap);
             gameMarker.setOpacity(0);
 
-            // Review Map
-            reviewMap = L.map('review-map').setView([37.5, 127], 4);
+            // Review Map: Pre-buffered and ready
+            reviewMap = L.map('review-map', {
+                zoomControl: true,
+                dragging: true,
+                scrollWheelZoom: true,
+                touchZoom: true
+            }).setView([20, 0], 2);
+
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
+                attribution: '&copy; OpenStreetMap contributors',
+                keepBuffer: 12,
+                updateWhenIdle: false
             }).addTo(reviewMap);
             reviewMarker = L.marker([0, 0]).addTo(reviewMap);
             reviewMarker.setOpacity(0);
+
+            // Pre-render tile size
+            setTimeout(() => {
+                if (reviewMap) reviewMap.invalidateSize();
+            }, 300);
         }
 
         function startGame() {
@@ -994,14 +992,44 @@
         }
 
         function viewMap(lat, lng) {
-            document.getElementById('review-map-container').classList.remove('hidden');
-            setTimeout(() => { 
-                reviewMap.invalidateSize();
-                reviewMap.flyTo([lat, lng], 5);
-                reviewMarker.setLatLng([lat, lng]);
-                reviewMarker.setOpacity(1);
-            }, 100);
+            const container = document.getElementById('review-map-container');
+            container.classList.remove('hidden');
+            reviewMap.invalidateSize();
+
+            // Set marker and crosshairs BEFORE flying camera
+            updateSearchCrosshair(lat, lng);
+            reviewMarker.setLatLng([lat, lng]);
+            reviewMarker.setOpacity(1);
+
+            // Fly camera smoothly to pre-loaded target
+            reviewMap.flyTo([lat, lng], 5, { duration: 1.2 });
             window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function updateSearchCrosshair(lat, lng) {
+            if (crosshairLines && crosshairLines.length) {
+                crosshairLines.forEach(line => line.remove());
+                crosshairLines = [];
+            }
+            if (reviewMap) {
+                // Horizontal line spanning fully across world wraparound (-540 to 540 deg)
+                const latLine = L.polyline([[lat, -540], [lat, 540]], {
+                    color: '#F04452',
+                    weight: 2,
+                    opacity: 0.7,
+                    interactive: false
+                }).addTo(reviewMap);
+
+                // Vertical line reaching exact Web Mercator map edges (-85.051128 to 85.051128 deg)
+                const lngLine = L.polyline([[-85.05112878, lng], [85.05112878, lng]], {
+                    color: '#F04452',
+                    weight: 2,
+                    opacity: 0.7,
+                    interactive: false
+                }).addTo(reviewMap);
+
+                crosshairLines.push(latLine, lngLine);
+            }
         }
 
         async function searchLocation() {
@@ -1019,14 +1047,18 @@
             if (latDir === 'S') lat = -Math.abs(lat);
             if (lngDir === 'W') lng = -Math.abs(lng);
 
-            document.getElementById('review-map-container').classList.remove('hidden');
+            const container = document.getElementById('review-map-container');
+            container.classList.remove('hidden');
+            reviewMap.invalidateSize();
+
+            // Set marker and crosshairs BEFORE camera moves
+            updateSearchCrosshair(lat, lng);
+            reviewMarker.setLatLng([lat, lng]);
+            reviewMarker.setOpacity(1);
+            reviewMap.flyTo([lat, lng], 5, { duration: 1.2 });
+
             const resultText = document.getElementById('search-result-text');
             resultText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>검색 중...';
-            
-            setTimeout(() => { 
-                reviewMap.invalidateSize();
-                reviewMap.flyTo([lat, lng], 5);
-            }, 100);
 
             try {
                 // Nominatim Reverse Geocoding API (Free, needs accept-language)
