@@ -1013,10 +1013,8 @@
                 gameMarker.setOpacity(0);
             }
 
-            const latNoise = (Math.random() * 3 - 1.5);
-            const lngNoise = (Math.random() * 3 - 1.5);
-            gameState.displayedLat = (gameState.currentQ.lat + latNoise).toFixed(2);
-            gameState.displayedLng = (gameState.currentQ.lng + lngNoise).toFixed(2);
+            gameState.displayedLat = Number(gameState.currentQ.lat.toFixed(2));
+            gameState.displayedLng = Number(gameState.currentQ.lng.toFixed(2));
 
             const latDir = gameState.displayedLat >= 0 ? 'N' : 'S';
             const lngDir = gameState.displayedLng >= 0 ? 'E' : 'W';
@@ -1227,8 +1225,8 @@
 
             setTimeout(() => { 
                 gameMap.invalidateSize(); 
-                const lat = gameState.currentQ.lat;
-                const lng = gameState.currentQ.lng;
+                const lat = gameState.displayedLat;
+                const lng = gameState.displayedLng;
                 gameMap.flyTo([lat, lng], 5, { duration: 1.5 });
                 gameMarker.setLatLng([lat, lng]);
                 gameMarker.setOpacity(1);
@@ -1279,8 +1277,8 @@
                 note.count = (note.count || 1) + 1;
                 note.date = dateStr;
                 note.displayedCoords = coordsStr;
-                note.lat = gameState.currentQ.lat;
-                note.lng = gameState.currentQ.lng;
+                note.lat = gameState.displayedLat;
+                note.lng = gameState.displayedLng;
 
                 let inputs = Array.isArray(note.wrongInputs) ? note.wrongInputs : (note.wrongInput ? [note.wrongInput] : []);
                 if (!inputs.includes(wrongInput)) inputs.push(wrongInput);
@@ -1292,7 +1290,7 @@
             } else {
                 notes.unshift({
                     date: dateStr, correctName: gameState.currentQ.name, displayedCoords: coordsStr,
-                    wrongInput: wrongInput, wrongInputs: [wrongInput], count: 1, lat: gameState.currentQ.lat, lng: gameState.currentQ.lng
+                    wrongInput: wrongInput, wrongInputs: [wrongInput], count: 1, lat: gameState.displayedLat, lng: gameState.displayedLng
                 });
             }
 
