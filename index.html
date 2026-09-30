@@ -377,6 +377,16 @@
                     <div class="w-14 h-8 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all after:shadow-md peer-checked:bg-toss-blue transition-colors duration-200"></div>
                 </label>
             </div>
+            
+            <div class="h-px bg-toss-border w-full"></div>
+            
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-semibold text-toss-red">통계 초기화</h3>
+                    <p class="text-sm text-toss-subtext">업적을 제외한 통계가 삭제됩니다.</p>
+                </div>
+                <button onclick="confirmClearStats()" class="btn py-2 px-4 text-sm font-semibold bg-red-50 text-toss-red border border-red-100 hover:bg-red-100 transition rounded-xl">초기화</button>
+            </div>
         </div>
     </div>
 
@@ -483,32 +493,32 @@
         </div>
     </div>
 
-    <div id="screen-review" class="screen max-w-md mx-auto bg-white min-h-screen">
-        <div class="sticky top-0 bg-white z-20 px-6 py-4 flex items-center justify-between border-b border-toss-border">
+    <div id="screen-review" class="screen max-w-md mx-auto px-6 py-8">
+        <div class="flex items-center justify-between mb-8">
             <div class="flex items-center">
-                <button onclick="showScreen('screen-lobby')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition -ml-2">
+                <button onclick="showScreen('screen-lobby')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition -ml-2">
                     <i class="fa-solid fa-chevron-left text-xl"></i>
                 </button>
-                <h1 class="text-xl font-bold ml-1">오답 노트 & 지도 검색</h1>
+                <h1 class="text-2xl font-bold ml-1">오답 및 검색</h1>
             </div>
-            <button onclick="confirmClearReview()" class="text-toss-subtext text-sm font-semibold hover:text-toss-red transition">초기화</button>
+            <button onclick="confirmClearReview()" class="text-toss-subtext text-sm font-semibold hover:text-toss-red transition bg-white px-3 py-1.5 rounded-lg border border-toss-border shadow-sm">오답 초기화</button>
         </div>
 
-        <div class="overflow-y-auto pb-20">
+        <div class="overflow-y-auto pb-10 flex flex-col gap-8">
             <!-- Map Search Tool -->
-            <div class="p-6 bg-toss-bg border-b border-toss-border">
+            <div class="card p-5">
                 <h2 class="font-bold text-lg mb-4 text-toss-text"><i class="fa-solid fa-magnifying-glass-location mr-2 text-toss-blue"></i>좌표로 국가 찾기</h2>
                 
                 <div class="flex gap-2 mb-3">
-                    <div class="flex-1 flex bg-white rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue">
-                        <input type="number" id="search-lat" placeholder="위도 (예: 37.5)" class="w-full px-3 py-3 outline-none text-sm" step="0.1">
+                    <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
+                        <input type="number" id="search-lat" placeholder="위도 (예: 37.5)" class="w-full px-3 py-3 outline-none text-sm bg-transparent" step="0.1">
                         <select id="search-lat-dir" class="bg-gray-50 border-l border-toss-border px-2 outline-none font-semibold text-toss-text text-sm">
                             <option value="N">N</option>
                             <option value="S">S</option>
                         </select>
                     </div>
-                    <div class="flex-1 flex bg-white rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue">
-                        <input type="number" id="search-lng" placeholder="경도 (예: 126.9)" class="w-full px-3 py-3 outline-none text-sm" step="0.1">
+                    <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
+                        <input type="number" id="search-lng" placeholder="경도 (예: 126.9)" class="w-full px-3 py-3 outline-none text-sm bg-transparent" step="0.1">
                         <select id="search-lng-dir" class="bg-gray-50 border-l border-toss-border px-2 outline-none font-semibold text-toss-text text-sm">
                             <option value="E">E</option>
                             <option value="W">W</option>
@@ -517,14 +527,14 @@
                 </div>
                 <button onclick="searchLocation()" class="btn btn-primary w-full py-3 mb-4 text-sm"><i class="fa-solid fa-satellite-dish mr-2"></i>검색하기</button>
                 
-                <div id="review-map-container" class="w-full rounded-xl overflow-hidden border border-toss-border shadow-sm">
+                <div id="review-map-container" class="w-full rounded-xl overflow-hidden border border-toss-border shadow-sm hidden">
                     <div id="review-map"></div>
                 </div>
                 <div id="search-result-text" class="mt-3 font-bold text-center text-lg text-toss-blue min-h-[28px]"></div>
             </div>
 
             <!-- Review List -->
-            <div class="p-6">
+            <div>
                 <h2 class="font-bold text-lg mb-4 text-toss-text">오답 기록</h2>
                 <div id="review-list" class="flex flex-col gap-3">
                     <!-- Injected via JS -->
@@ -726,7 +736,7 @@
             SPEED_DEMON: { id: 'SPEED_DEMON', icon: 'fa-bolt', color: 'text-orange-500', title: '빛보다 빠른 손', desc: '0.3초 안에 정답을 맞추세요.', hidden: true },
             ZERO_SCORE: { id: 'ZERO_SCORE', icon: 'fa-face-dizzy', color: 'text-gray-500', title: '일부러 틀리기도 힘들다', desc: '한 게임에서 0점을 기록하세요.', hidden: true },
             ATLANTIS: { id: 'ATLANTIS', icon: 'fa-water', color: 'text-blue-400', title: '아틀란티스', desc: '지도 검색에서 바다를 검색하세요.', hidden: true },
-            CLOSE_CALL: { id: 'CLOSE_CALL', icon: 'fa-people-arrows', color: 'text-red-400', title: '가깝고도 먼 이웃', desc: '한국이 정답일 때 일본이나 북한을 선택하세요.', hidden: true }
+            CLOSE_CALL: { id: 'CLOSE_CALL', icon: 'fa-people-arrows', color: 'text-red-400', title: '가깝고도 먼 이웃', desc: '정답이 북한일 때 맞추세요.', hidden: true }
         };
 
         let gameState = {
@@ -784,6 +794,27 @@
 
         function saveStats() {
             localStorage.setItem('geoGuessStats', JSON.stringify(userStats));
+        }
+
+        function confirmClearStats() {
+            showModal(
+                '통계 초기화',
+                '정말로 모든 통계를 초기화하시겠습니까? (업적은 유지됩니다)',
+                '초기화',
+                'bg-toss-red',
+                () => {
+                    userStats = {
+                        gamesPlayed: 0, totalScore: 0, totalQuestions: 0, correctAnswers: 0,
+                        continentStats: {
+                            Asia: { total: 0, correct: 0 }, Europe: { total: 0, correct: 0 },
+                            NorthAmerica: { total: 0, correct: 0 }, SouthAmerica: { total: 0, correct: 0 },
+                            Africa: { total: 0, correct: 0 }, Oceania: { total: 0, correct: 0 }
+                        }
+                    };
+                    localStorage.removeItem('geoGuessStats');
+                    showToast('통계가 초기화되었습니다.');
+                }
+            );
         }
 
         function updateContinentStat(isCorrect) {
@@ -1013,14 +1044,39 @@
             }
         }
 
+        // 두 좌표 간의 거리 계산 (Haversine)
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const p = 0.017453292519943295;
+            const c = Math.cos;
+            const a = 0.5 - c((lat2 - lat1) * p)/2 + 
+                      c(lat1 * p) * c(lat2 * p) * 
+                      (1 - c((lon2 - lon1) * p))/2;
+            return 12742 * Math.asin(Math.sqrt(a));
+        }
+
         function renderMultiChoice() {
             const container = document.getElementById('input-multi');
             container.innerHTML = '';
             const current = gameState.currentQ;
-            const otherCountries = countryData.filter(c => c.name !== current.name);
-            const shuffledOthers = [...otherCountries].sort(() => 0.5 - Math.random());
-            const wrongChoices = shuffledOthers.slice(0, 3);
-            const choices = [current, ...wrongChoices].sort(() => 0.5 - Math.random());
+            
+            // 거리 기반으로 국가 목록 정렬 (가까운 국가 우선)
+            let otherCountries = countryData.filter(c => c.name !== current.name).map(c => {
+                return { ...c, dist: getDistance(current.lat, current.lng, c.lat, c.lng) };
+            });
+            otherCountries.sort((a, b) => a.dist - b.dist);
+            
+            const closest = otherCountries.slice(0, 5); // 가장 가까운 5개 국가
+            const rest = otherCountries.slice(5); // 나머지 국가
+            
+            // 인접 국가를 최소 1개에서 최대 2개까지 랜덤으로 포함
+            const numClose = Math.floor(Math.random() * 2) + 1;
+            closest.sort(() => 0.5 - Math.random());
+            rest.sort(() => 0.5 - Math.random());
+            
+            const selectedClose = closest.slice(0, numClose);
+            const selectedRest = rest.slice(0, 3 - numClose);
+            
+            const choices = [current, ...selectedClose, ...selectedRest].sort(() => 0.5 - Math.random());
 
             choices.forEach(choice => {
                 const btn = document.createElement('button');
@@ -1038,6 +1094,11 @@
                 // 빛보다 빠른 손 업적 체크
                 if (Date.now() - gameState.questionStartTime <= 300) {
                     unlockAchievement('SPEED_DEMON');
+                }
+                
+                // 가깝고도 먼 이웃 업적 체크 (북한을 맞췄을 때)
+                if (gameState.currentQ.name === '조선민주주의인민공화국') {
+                    unlockAchievement('CLOSE_CALL');
                 }
 
                 const wrongCount = 3 - gameState.tries;
@@ -1062,7 +1123,6 @@
                 btn.classList.add('bg-toss-red', 'text-white', 'border-transparent', 'opacity-60');
                 
                 saveReviewNote(selectedName);
-                checkCloseCallAchievement(selectedName);
 
                 if (gameState.tries <= 0) {
                     userStats.totalQuestions++;
@@ -1097,6 +1157,11 @@
                 if (Date.now() - gameState.questionStartTime <= 300) {
                     unlockAchievement('SPEED_DEMON'); // 타자가 0.3초 컷이면 인정!
                 }
+                
+                // 가깝고도 먼 이웃 업적 체크 (북한을 맞췄을 때)
+                if (gameState.currentQ.name === '조선민주주의인민공화국') {
+                    unlockAchievement('CLOSE_CALL');
+                }
 
                 const wrongCount = 3 - gameState.tries;
                 const earnedScore = 10 - (wrongCount * 4);
@@ -1113,9 +1178,6 @@
             } else {
                 gameState.tries--;
                 saveReviewNote(userVal);
-                
-                // 가깝고도 먼 이웃 업적 처리를 위해 원본 텍스트 넘김
-                checkCloseCallAchievement(userValNormal);
 
                 if (gameState.tries > 0) {
                     input.value = '';
