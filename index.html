@@ -777,7 +777,6 @@
 
         let gameMap, gameMarker;
         let reviewMap, reviewMarker;
-        let crosshairLines = [];
         let wrongMarkers = [];
         let wrongMarkerIcon;
 
@@ -901,7 +900,6 @@
             if (container) container.classList.remove('hidden');
             if (reviewMap) {
                 reviewMap.invalidateSize();
-                updateSearchCrosshair(country.lat, country.lng);
                 reviewMarker.setLatLng([country.lat, country.lng]);
                 reviewMarker.setOpacity(1);
                 reviewMap.flyTo([country.lat, country.lng], 5, { duration: 1.2 });
@@ -1298,8 +1296,8 @@
 
         function handleChoiceReview(selectedName, btn) {
             if (selectedName === gameState.currentQ.name) {
-                const lat = gameState.displayedLat;
-                const lng = gameState.displayedLng;
+                const lat = gameState.currentQ.lat;
+                const lng = gameState.currentQ.lng;
                 gameMap.flyTo([lat, lng], 5, { duration: 1.2 });
                 if (gameMarker) {
                     gameMarker.setOpacity(1);
@@ -1316,10 +1314,12 @@
             let existing = wrongMarkers.find(w => w.name === choiceCountry.name);
             if (!existing) {
                 const marker = L.marker([choiceCountry.lat, choiceCountry.lng], { icon: getWrongMarkerIcon() }).addTo(gameMap);
+                const formatted = formatCoords(choiceCountry.lat, choiceCountry.lng, 4);
                 marker.bindPopup(`
                     <div class="text-center">
                         <strong class="text-base text-toss-red">${choiceCountry.name}</strong><br>
-                        <span class="text-xs text-gray-500">선택한 오답 위치</span>
+                        <span class="text-xs text-gray-500">선택한 오답 위치</span><br>
+                        <span class="text-xs text-gray-500">${formatted}</span>
                     </div>
                 `);
                 existing = { name: choiceCountry.name, marker: marker };
@@ -1479,16 +1479,18 @@
 
             setTimeout(() => { 
                 gameMap.invalidateSize(); 
-                const lat = gameState.displayedLat;
-                const lng = gameState.displayedLng;
+                const lat = gameState.currentQ.lat;
+                const lng = gameState.currentQ.lng;
                 gameMap.flyTo([lat, lng], 5, { duration: 1.5 });
                 gameMarker.setLatLng([lat, lng]);
                 gameMarker.setOpacity(1);
                 
+                const formatted = formatCoords(lat, lng, 4);
                 gameMarker.bindPopup(`
                     <div class="text-center">
                         <strong class="text-lg">${gameState.currentQ.name}</strong><br>
-                        <span class="text-xs text-gray-500">정답 위치</span>
+                        <span class="text-xs text-gray-500">정답 위치</span><br>
+                        <span class="text-xs text-gray-500">${formatted}</span>
                     </div>
                 `).openPopup();
             }, 100);
@@ -1695,23 +1697,10 @@
             container.classList.remove('hidden');
             reviewMap.invalidateSize();
 
-            updateSearchCrosshair(lat, lng);
             reviewMarker.setLatLng([lat, lng]);
             reviewMarker.setOpacity(1);
             reviewMap.flyTo([lat, lng], 5, { duration: 1.2 });
             window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function updateSearchCrosshair(lat, lng) {
-            if (crosshairLines && crosshairLines.length) {
-                crosshairLines.forEach(line => line.remove());
-                crosshairLines = [];
-            }
-            if (reviewMap) {
-                const latLine = L.polyline([[lat, -540], [lat, 540]], { color: '#F04452', weight: 2, opacity: 0.7, interactive: false }).addTo(reviewMap);
-                const lngLine = L.polyline([[-85.05112878, lng], [85.05112878, lng]], { color: '#F04452', weight: 2, opacity: 0.7, interactive: false }).addTo(reviewMap);
-                crosshairLines.push(latLine, lngLine);
-            }
         }
 
         async function searchLocation(customLat, customLng) {
@@ -1739,7 +1728,6 @@
             if (container) container.classList.remove('hidden');
             if (reviewMap) {
                 reviewMap.invalidateSize();
-                updateSearchCrosshair(lat, lng);
                 reviewMarker.setLatLng([lat, lng]);
                 reviewMarker.setOpacity(1);
                 reviewMap.flyTo([lat, lng], 5, { duration: 1.2 });
