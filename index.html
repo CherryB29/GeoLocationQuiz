@@ -1046,7 +1046,12 @@
 
         function renderGameCoords() {
             const coordsEl = document.getElementById('game-coords');
-            if (!coordsEl || !gameState.currentQ) return;
+            if (!coordsEl) return;
+
+            if (!gameState.currentQ) {
+                coordsEl.textContent = '--° , --°';
+                return;
+            }
 
             const latDir = gameState.displayedLat >= 0 ? 'N' : 'S';
             const lngDir = gameState.displayedLng >= 0 ? 'E' : 'W';
