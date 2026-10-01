@@ -12,24 +12,26 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css" />
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'toss-blue': '#3182F6',
-                        'toss-bg': '#F2F4F6',
-                        'toss-surface': '#FFFFFF',
-                        'toss-text': '#191F28',
-                        'toss-subtext': '#8B95A1',
-                        'toss-border': '#E5E8EB',
-                        'toss-red': '#F04452',
-                        'toss-green': '#34C759',
-                    },
-                    fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            'toss-blue': '#3182F6',
+                            'toss-bg': '#F2F4F6',
+                            'toss-surface': '#FFFFFF',
+                            'toss-text': '#191F28',
+                            'toss-subtext': '#8B95A1',
+                            'toss-border': '#E5E8EB',
+                            'toss-red': '#F04452',
+                            'toss-green': '#34C759',
+                        },
+                        fontFamily: {
+                            sans: ['Pretendard', 'sans-serif'],
+                        }
                     }
                 }
-            }
+            };
         }
     </script>
     <style>
@@ -505,29 +507,49 @@
         </div>
 
         <div class="overflow-y-auto pb-10 flex flex-col gap-8">
-            <!-- Map Search Tool -->
+            <!-- Map & Country Search Tool -->
             <div class="card p-5">
-                <h2 class="font-bold text-lg mb-4 text-toss-text"><i class="fa-solid fa-magnifying-glass-location mr-2 text-toss-blue"></i>좌표로 국가 찾기</h2>
-                
-                <div class="flex gap-2 mb-3">
-                    <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
-                        <input type="number" id="search-lat" placeholder="위도 (예: 37.5)" class="w-full px-3 py-3 outline-none text-sm bg-transparent" step="0.1">
-                        <select id="search-lat-dir" class="bg-gray-50 border-l border-toss-border px-2 outline-none font-semibold text-toss-text text-sm">
-                            <option value="N">N</option>
-                            <option value="S">S</option>
-                        </select>
-                    </div>
-                    <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
-                        <input type="number" id="search-lng" placeholder="경도 (예: 126.9)" class="w-full px-3 py-3 outline-none text-sm bg-transparent" step="0.1">
-                        <select id="search-lng-dir" class="bg-gray-50 border-l border-toss-border px-2 outline-none font-semibold text-toss-text text-sm">
-                            <option value="E">E</option>
-                            <option value="W">W</option>
-                        </select>
-                    </div>
+                <h2 class="font-bold text-lg mb-4 text-toss-text"><i class="fa-solid fa-magnifying-glass-location mr-2 text-toss-blue"></i>국가 & 좌표 검색</h2>
+
+                <div class="flex bg-toss-bg p-1 rounded-xl mb-4">
+                    <button type="button" id="tab-search-coord" onclick="switchSearchTab('coord')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-toss-blue transition">좌표로 검색</button>
+                    <button type="button" id="tab-search-country" onclick="switchSearchTab('country')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-toss-subtext transition">국가명으로 검색</button>
                 </div>
-                <button onclick="searchLocation()" class="btn btn-primary w-full py-3 mb-4 text-sm"><i class="fa-solid fa-satellite-dish mr-2"></i>검색하기</button>
                 
-                <div id="review-map-container" class="w-full rounded-xl overflow-hidden border border-toss-border shadow-sm hidden">
+                <!-- Coordinate Search Mode -->
+                <div id="search-coord-section">
+                    <div class="flex gap-2 mb-3">
+                        <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
+                            <input type="number" id="search-lat" placeholder="위도 (예: 37.5)" class="w-full px-3 py-3 outline-none text-sm bg-transparent" step="0.1">
+                            <select id="search-lat-dir" class="bg-gray-50 border-l border-toss-border px-2 outline-none font-semibold text-toss-text text-sm">
+                                <option value="N">N</option>
+                                <option value="S">S</option>
+                            </select>
+                        </div>
+                        <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
+                            <input type="number" id="search-lng" placeholder="경도 (예: 126.9)" class="w-full px-3 py-3 outline-none text-sm bg-transparent" step="0.1">
+                            <select id="search-lng-dir" class="bg-gray-50 border-l border-toss-border px-2 outline-none font-semibold text-toss-text text-sm">
+                                <option value="E">E</option>
+                                <option value="W">W</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button onclick="searchLocation()" class="btn btn-primary w-full py-3 mb-3 text-sm"><i class="fa-solid fa-satellite-dish mr-2"></i>좌표로 검색하기</button>
+                </div>
+
+                <!-- Country Name Search Mode -->
+                <div id="search-country-section" class="hidden">
+                    <div class="flex gap-2 mb-3">
+                        <div class="flex-1 flex bg-toss-bg rounded-xl border border-toss-border overflow-hidden focus-within:border-toss-blue focus-within:ring-1 ring-toss-blue transition">
+                            <input type="text" id="search-country-input" placeholder="국가 이름 입력 (예: 대한민국, 프랑스)" class="w-full px-4 py-3 outline-none text-sm bg-transparent">
+                        </div>
+                    </div>
+                    <button onclick="searchCountryName()" class="btn btn-primary w-full py-3 mb-3 text-sm"><i class="fa-solid fa-magnifying-glass mr-2"></i>국가명으로 검색하기</button>
+                </div>
+
+                <p class="text-xs text-toss-subtext text-center mb-3">지도를 더블클릭(더블탭)하면 해당 위치의 좌표가 자동으로 검색됩니다.</p>
+                
+                <div id="review-map-container" class="w-full rounded-xl overflow-hidden border border-toss-border shadow-sm">
                     <div id="review-map"></div>
                 </div>
                 <div id="search-result-text" class="mt-3 font-bold text-center text-lg text-toss-blue min-h-[28px]"></div>
@@ -755,6 +777,135 @@
         let gameMap, gameMarker;
         let reviewMap, reviewMarker;
         let crosshairLines = [];
+        let wrongMarkers = [];
+        let wrongMarkerIcon;
+
+        function getWrongMarkerIcon() {
+            if (!wrongMarkerIcon && typeof L !== 'undefined') {
+                wrongMarkerIcon = L.divIcon({
+                    className: 'custom-wrong-pin',
+                    html: '<div style="color: #F04452; font-size: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); transform: translate(-14px, -28px);"><i class="fa-solid fa-location-dot"></i></div>',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 28],
+                    popupAnchor: [0, -28]
+                });
+            }
+            return wrongMarkerIcon;
+        }
+
+        function clearWrongMarkers() {
+            wrongMarkers.forEach(item => {
+                if (item && item.marker) {
+                    item.marker.remove();
+                }
+            });
+            wrongMarkers = [];
+        }
+
+        function findCountry(query) {
+            if (!query || typeof query !== 'string') return null;
+            const trimmed = query.trim().toLowerCase();
+            if (!trimmed) return null;
+            const noSpace = trimmed.replace(/\s+/g, '');
+
+            return countryData.find(c => {
+                const cNameLower = c.name.toLowerCase();
+                if (cNameLower === trimmed || cNameLower.replace(/\s+/g, '') === noSpace) return true;
+                if (c.aliases && Array.isArray(c.aliases)) {
+                    return c.aliases.some(a => {
+                        const aLower = a.toLowerCase();
+                        return aLower === trimmed || aLower.replace(/\s+/g, '') === noSpace;
+                    });
+                }
+                return false;
+            }) || null;
+        }
+
+        function formatCoords(lat, lng, decimals = 2) {
+            const latDir = lat >= 0 ? 'N' : 'S';
+            const lngDir = lng >= 0 ? 'E' : 'W';
+            return `${Math.abs(lat).toFixed(decimals)}° ${latDir}, ${Math.abs(lng).toFixed(decimals)}° ${lngDir}`;
+        }
+
+        function setCoordinateInputs(lat, lng, decimals = 4) {
+            const latInput = document.getElementById('search-lat');
+            const latDirSelect = document.getElementById('search-lat-dir');
+            const lngInput = document.getElementById('search-lng');
+            const lngDirSelect = document.getElementById('search-lng-dir');
+
+            if (latInput) latInput.value = Number(Math.abs(lat).toFixed(decimals));
+            if (latDirSelect) latDirSelect.value = lat >= 0 ? 'N' : 'S';
+            if (lngInput) lngInput.value = Number(Math.abs(lng).toFixed(decimals));
+            if (lngDirSelect) lngDirSelect.value = lng >= 0 ? 'E' : 'W';
+        }
+
+        function switchSearchTab(mode) {
+            const tabCoord = document.getElementById('tab-search-coord');
+            const tabCountry = document.getElementById('tab-search-country');
+            const secCoord = document.getElementById('search-coord-section');
+            const secCountry = document.getElementById('search-country-section');
+
+            if (mode === 'coord') {
+                if (secCoord) secCoord.classList.remove('hidden');
+                if (secCountry) secCountry.classList.add('hidden');
+                if (tabCoord) tabCoord.className = 'flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-toss-blue transition';
+                if (tabCountry) tabCountry.className = 'flex-1 py-2 text-sm font-semibold rounded-lg text-toss-subtext transition';
+            } else {
+                if (secCoord) secCoord.classList.add('hidden');
+                if (secCountry) secCountry.classList.remove('hidden');
+                if (tabCoord) tabCoord.className = 'flex-1 py-2 text-sm font-semibold rounded-lg text-toss-subtext transition';
+                if (tabCountry) tabCountry.className = 'flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-toss-blue transition';
+                const input = document.getElementById('search-country-input');
+                if (input) setTimeout(() => input.focus(), 50);
+            }
+        }
+
+        function searchCountryName() {
+            const input = document.getElementById('search-country-input');
+            const query = input ? input.value : '';
+            if (!query || !query.trim()) {
+                showToast('국가 이름을 입력해 주세요.');
+                return;
+            }
+
+            const country = findCountry(query);
+            const resultText = document.getElementById('search-result-text');
+
+            if (!country) {
+                if (resultText) {
+                    resultText.textContent = '일치하는 국가를 찾을 수 없습니다.';
+                    resultText.className = 'mt-3 font-bold text-center text-lg text-toss-red min-h-[28px]';
+                }
+                showToast('일치하는 국가를 찾을 수 없습니다.');
+                return;
+            }
+
+            setCoordinateInputs(country.lat, country.lng);
+
+            const container = document.getElementById('review-map-container');
+            if (container) container.classList.remove('hidden');
+            if (reviewMap) {
+                reviewMap.invalidateSize();
+                updateSearchCrosshair(country.lat, country.lng);
+                reviewMarker.setLatLng([country.lat, country.lng]);
+                reviewMarker.setOpacity(1);
+                reviewMap.flyTo([country.lat, country.lng], 5, { duration: 1.2 });
+            }
+
+            const formatted = formatCoords(country.lat, country.lng);
+            if (resultText) {
+                resultText.textContent = `📍 ${country.name} (${formatted})`;
+                resultText.className = 'mt-3 font-bold text-center text-lg text-toss-green min-h-[28px]';
+            }
+            if (reviewMarker) {
+                reviewMarker.bindPopup(`
+                    <div class="text-center">
+                        <strong class="text-base">${country.name}</strong><br>
+                        <span class="text-xs text-gray-500">${formatted}</span>
+                    </div>
+                `).openPopup();
+            }
+        }
 
         function initSettings() {
             const saved = localStorage.getItem('geoGuessSettings');
@@ -947,7 +1098,8 @@
             gameMarker.setOpacity(0);
 
             reviewMap = L.map('review-map', {
-                zoomControl: true, dragging: true, scrollWheelZoom: true, touchZoom: true
+                zoomControl: true, dragging: true, scrollWheelZoom: true, touchZoom: true,
+                doubleClickZoom: false
             }).setView([20, 0], 2);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -956,10 +1108,50 @@
             reviewMarker = L.marker([0, 0]).addTo(reviewMap);
             reviewMarker.setOpacity(0);
 
+            let lastDblSearchTime = 0;
+            function triggerReviewMapSearch(latlng) {
+                const now = Date.now();
+                if (now - lastDblSearchTime < 500) return;
+                lastDblSearchTime = now;
+
+                const wrapped = latlng.wrap();
+                const lat = Math.max(-90, Math.min(90, wrapped.lat));
+                const lng = Math.max(-180, Math.min(180, wrapped.lng));
+
+                switchSearchTab('coord');
+                searchLocation(lat, lng);
+            }
+
+            reviewMap.on('dblclick', (e) => {
+                if (e.originalEvent) {
+                    L.DomEvent.stop(e.originalEvent);
+                }
+                triggerReviewMapSearch(e.latlng);
+            });
+
+            let lastTapTime = 0;
+            let lastTapPoint = null;
+            reviewMap.on('click', (e) => {
+                const now = Date.now();
+                const currentPoint = reviewMap.latLngToContainerPoint(e.latlng);
+                if (now - lastTapTime < 350 && lastTapPoint) {
+                    const dist = Math.hypot(currentPoint.x - lastTapPoint.x, currentPoint.y - lastTapPoint.y);
+                    if (dist < 35) {
+                        lastTapTime = 0;
+                        lastTapPoint = null;
+                        triggerReviewMapSearch(e.latlng);
+                        return;
+                    }
+                }
+                lastTapTime = now;
+                lastTapPoint = currentPoint;
+            });
+
             setTimeout(() => { if (reviewMap) reviewMap.invalidateSize(); }, 300);
         }
 
         function startGame() {
+            clearWrongMarkers();
             // 통계 업데이트 (플레이 횟수)
             userStats.gamesPlayed++;
             saveStats();
@@ -989,6 +1181,7 @@
         }
 
         function nextQuestion(isFirst = false) {
+            clearWrongMarkers();
             if (!isFirst) gameState.round++;
             
             if (gameState.round >= gameState.maxRounds) {
@@ -1085,8 +1278,48 @@
             });
         }
 
+        function handleChoiceReview(selectedName, btn) {
+            if (selectedName === gameState.currentQ.name) {
+                const lat = gameState.displayedLat;
+                const lng = gameState.displayedLng;
+                gameMap.flyTo([lat, lng], 5, { duration: 1.2 });
+                if (gameMarker) {
+                    gameMarker.setOpacity(1);
+                    gameMarker.openPopup();
+                }
+                return;
+            }
+
+            const choiceCountry = countryData.find(c => c.name === selectedName);
+            if (!choiceCountry) return;
+
+            gameMap.flyTo([choiceCountry.lat, choiceCountry.lng], 5, { duration: 1.2 });
+
+            let existing = wrongMarkers.find(w => w.name === choiceCountry.name);
+            if (!existing) {
+                const marker = L.marker([choiceCountry.lat, choiceCountry.lng], { icon: getWrongMarkerIcon() }).addTo(gameMap);
+                marker.bindPopup(`
+                    <div class="text-center">
+                        <strong class="text-base text-toss-red">${choiceCountry.name}</strong><br>
+                        <span class="text-xs text-gray-500">선택한 오답 위치</span>
+                    </div>
+                `);
+                existing = { name: choiceCountry.name, marker: marker };
+                wrongMarkers.push(existing);
+            }
+            existing.marker.openPopup();
+
+            if (btn && !btn.classList.contains('bg-toss-red')) {
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('bg-toss-red', 'text-white', 'border-transparent', 'opacity-80');
+            }
+        }
+
         function checkMultiChoice(selectedName, btn) {
-            if (gameState.answered) return;
+            if (gameState.answered) {
+                handleChoiceReview(selectedName, btn);
+                return;
+            }
             
             if (selectedName === gameState.currentQ.name) {
                 // 빛보다 빠른 손 업적 체크
@@ -1141,15 +1374,15 @@
                 return;
             }
             
-            const normalizeText = (text) => text.replace(/\s+/g, '').toLowerCase();
-            const userValNormal = normalizeText(userVal);
-            const target = gameState.currentQ;
-            const targetNameNormal = normalizeText(target.name);
-            
-            let isCorrect = (userValNormal === targetNameNormal);
-            if (!isCorrect && target.aliases) {
-                isCorrect = target.aliases.some(alias => normalizeText(alias) === userValNormal);
+            const matchedCountry = findCountry(userVal);
+            if (!matchedCountry) {
+                showToast('등록되지 않은 국가 이름입니다. 오타를 확인해 주세요.');
+                input.focus();
+                return;
             }
+
+            const target = gameState.currentQ;
+            const isCorrect = (matchedCountry.name === target.name);
 
             if (isCorrect) {
                 if (Date.now() - gameState.questionStartTime <= 300) {
@@ -1175,9 +1408,10 @@
                 revealAnswer(true);
             } else {
                 gameState.tries--;
-                saveReviewNote(userVal);
+                saveReviewNote(matchedCountry.name);
 
                 if (gameState.tries > 0) {
+                    showToast(`틀렸습니다! (남은 기회: ${gameState.tries}번)`);
                     input.value = '';
                     input.focus();
                 } else {
@@ -1207,11 +1441,12 @@
             if (settings.multiChoice) {
                 const btns = document.getElementById('input-multi').querySelectorAll('button');
                 btns.forEach(b => {
-                    b.disabled = true;
+                    b.disabled = false;
+                    b.style.pointerEvents = 'auto';
+                    b.style.cursor = 'pointer';
                     if (b.textContent === gameState.currentQ.name) {
-                        b.classList.remove('btn-secondary');
+                        b.classList.remove('btn-secondary', 'opacity-60', 'bg-toss-red');
                         b.classList.add('bg-toss-green', 'text-white', 'border-transparent');
-                        b.classList.remove('opacity-60', 'bg-toss-red');
                     }
                 });
             } else {
@@ -1246,7 +1481,10 @@
                 '정말로 게임을 종료하시겠습니까? 진행 상황이 초기화됩니다.',
                 '종료하기',
                 'bg-toss-red',
-                () => showScreen('screen-lobby')
+                () => {
+                    clearWrongMarkers();
+                    showScreen('screen-lobby');
+                }
             );
         }
 
@@ -1457,54 +1695,103 @@
             }
         }
 
-        async function searchLocation() {
-            let lat = parseFloat(document.getElementById('search-lat').value);
-            let lng = parseFloat(document.getElementById('search-lng').value);
-            const latDir = document.getElementById('search-lat-dir').value;
-            const lngDir = document.getElementById('search-lng-dir').value;
+        async function searchLocation(customLat, customLng) {
+            let lat, lng;
+            if (typeof customLat === 'number' && typeof customLng === 'number') {
+                lat = customLat;
+                lng = customLng;
+                setCoordinateInputs(lat, lng);
+            } else {
+                const latVal = parseFloat(document.getElementById('search-lat').value);
+                const lngVal = parseFloat(document.getElementById('search-lng').value);
+                const latDir = document.getElementById('search-lat-dir').value;
+                const lngDir = document.getElementById('search-lng-dir').value;
 
-            if (isNaN(lat) || isNaN(lng)) {
-                showToast('위도와 경도를 모두 숫자로 입력해주세요.');
-                return;
+                if (isNaN(latVal) || isNaN(lngVal)) {
+                    showToast('위도와 경도를 모두 숫자로 입력해주세요.');
+                    return;
+                }
+
+                lat = latDir === 'S' ? -Math.abs(latVal) : Math.abs(latVal);
+                lng = lngDir === 'W' ? -Math.abs(lngVal) : Math.abs(lngVal);
             }
 
-            if (latDir === 'S') lat = -Math.abs(lat);
-            if (lngDir === 'W') lng = -Math.abs(lng);
-
             const container = document.getElementById('review-map-container');
-            container.classList.remove('hidden');
-            reviewMap.invalidateSize();
-
-            updateSearchCrosshair(lat, lng);
-            reviewMarker.setLatLng([lat, lng]);
-            reviewMarker.setOpacity(1);
-            reviewMap.flyTo([lat, lng], 5, { duration: 1.2 });
+            if (container) container.classList.remove('hidden');
+            if (reviewMap) {
+                reviewMap.invalidateSize();
+                updateSearchCrosshair(lat, lng);
+                reviewMarker.setLatLng([lat, lng]);
+                reviewMarker.setOpacity(1);
+                reviewMap.flyTo([lat, lng], 5, { duration: 1.2 });
+            }
 
             const resultText = document.getElementById('search-result-text');
-            resultText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>검색 중...';
+            if (resultText) {
+                resultText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>검색 중...';
+                resultText.className = "mt-3 font-bold text-center text-lg text-toss-blue min-h-[28px]";
+            }
+
+            const formatted = formatCoords(lat, lng);
 
             try {
                 const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=3&accept-language=ko`);
-                if (!response.ok) throw new Error('API Error');
-                const data = await response.json();
+                let data = null;
+                if (response.ok) {
+                    data = await response.json();
+                } else if (response.status !== 404) {
+                    throw new Error('API Error: ' + response.status);
+                }
                 
                 if (data && data.address && data.address.country) {
-                    resultText.textContent = `📍 검색 결과: ${data.address.country}`;
-                    resultText.className = "mt-3 font-bold text-center text-lg text-toss-green min-h-[28px]";
+                    if (resultText) {
+                        resultText.textContent = `📍 검색 결과: ${data.address.country}`;
+                        resultText.className = "mt-3 font-bold text-center text-lg text-toss-green min-h-[28px]";
+                    }
+                    if (reviewMarker) {
+                        reviewMarker.bindPopup(`
+                            <div class="text-center">
+                                <strong class="text-base">${data.address.country}</strong><br>
+                                <span class="text-xs text-gray-500">${formatted}</span>
+                            </div>
+                        `).openPopup();
+                    }
                 } else if (data && data.name) {
-                     resultText.textContent = `📍 검색 결과: ${data.name} (국가 정보 없음)`;
-                     resultText.className = "mt-3 font-bold text-center text-lg text-toss-subtext min-h-[28px]";
+                    if (resultText) {
+                        resultText.textContent = `📍 검색 결과: ${data.name} (국가 정보 없음)`;
+                        resultText.className = "mt-3 font-bold text-center text-lg text-toss-subtext min-h-[28px]";
+                    }
+                    if (reviewMarker) {
+                        reviewMarker.bindPopup(`
+                            <div class="text-center">
+                                <strong class="text-base">${data.name}</strong><br>
+                                <span class="text-xs text-gray-500">${formatted}</span>
+                            </div>
+                        `).openPopup();
+                    }
                 } else {
-                    resultText.textContent = "🌊 바다 또는 알 수 없는 지역입니다.";
-                    resultText.className = "mt-3 font-bold text-center text-lg text-toss-subtext min-h-[28px]";
+                    if (resultText) {
+                        resultText.textContent = "🌊 바다 또는 알 수 없는 지역입니다.";
+                        resultText.className = "mt-3 font-bold text-center text-lg text-toss-subtext min-h-[28px]";
+                    }
+                    if (reviewMarker) {
+                        reviewMarker.bindPopup(`
+                            <div class="text-center">
+                                <strong class="text-base">바다 또는 알 수 없는 지역</strong><br>
+                                <span class="text-xs text-gray-500">${formatted}</span>
+                            </div>
+                        `).openPopup();
+                    }
                     
                     // 아틀란티스 히든 업적 체크!
                     unlockAchievement('ATLANTIS');
                 }
             } catch (error) {
                 console.error(error);
-                resultText.textContent = "검색에 실패했습니다. (네트워크 오류)";
-                resultText.className = "mt-3 font-bold text-center text-lg text-toss-red min-h-[28px]";
+                if (resultText) {
+                    resultText.textContent = "검색에 실패했습니다. (네트워크 오류)";
+                    resultText.className = "mt-3 font-bold text-center text-lg text-toss-red min-h-[28px]";
+                }
             }
         }
 
@@ -1530,6 +1817,15 @@
             initMaps();
             document.getElementById('text-answer')?.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') submitTextAnswer();
+            });
+            document.getElementById('search-country-input')?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') searchCountryName();
+            });
+            document.getElementById('search-lat')?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') searchLocation();
+            });
+            document.getElementById('search-lng')?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') searchLocation();
             });
         };
 
