@@ -1048,7 +1048,7 @@
             const coordsEl = document.getElementById('game-coords');
             if (!coordsEl) return;
 
-            if (typeof gameState === 'undefined' || !gameState.currentQ) {
+            if (!gameState || !gameState.currentQ) {
                 coordsEl.textContent = '--°, --°';
                 return;
             }
