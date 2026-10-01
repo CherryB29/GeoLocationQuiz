@@ -453,6 +453,7 @@
             <div id="input-multi" class="grid grid-cols-2 gap-3 mx-4 lg:mx-0 mb-4"></div>
 
             <div id="input-text" class="hidden flex-col gap-3 mx-4 lg:mx-0 mb-4">
+                <p id="text-answer-warning" class="hidden text-sm font-semibold text-toss-red text-center" role="status" aria-live="polite"></p>
                 <input type="text" id="text-answer" placeholder="국가 이름을 입력하세요" class="w-full px-4 py-3.5 rounded-xl border border-toss-border bg-toss-bg focus:outline-none focus:border-toss-blue focus:ring-1 focus:ring-toss-blue transition font-medium text-lg text-center" autocomplete="off">
                 <button id="btn-submit-text" onclick="submitTextAnswer()" class="btn btn-primary w-full py-3.5 text-lg">정답 제출</button>
             </div>
@@ -784,7 +785,7 @@
             if (!wrongMarkerIcon && typeof L !== 'undefined') {
                 wrongMarkerIcon = L.divIcon({
                     className: 'custom-wrong-pin',
-                    html: '<div style="color: #F04452; font-size: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); transform: translate(-14px, -28px);"><i class="fa-solid fa-location-dot"></i></div>',
+                    html: '<div style="color: #F04452; font-size: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"><i class="fa-solid fa-location-dot"></i></div>',
                     iconSize: [28, 28],
                     iconAnchor: [14, 28],
                     popupAnchor: [0, -28]
@@ -819,6 +820,20 @@
                 }
                 return false;
             }) || null;
+        }
+
+        function updateTextAnswerWarning() {
+            const input = document.getElementById('text-answer');
+            const warning = document.getElementById('text-answer-warning');
+            if (!input || !warning) return;
+
+            if (input.value.trim() && !findCountry(input.value)) {
+                warning.textContent = '등록되지 않은 국가 이름입니다. 오타를 확인해 주세요.';
+                warning.classList.remove('hidden');
+            } else {
+                warning.textContent = '';
+                warning.classList.add('hidden');
+            }
         }
 
         function formatCoords(lat, lng, decimals = 2) {
@@ -1225,6 +1240,9 @@
                 document.getElementById('btn-submit-text').disabled = false;
                 setTimeout(() => textInput.focus(), 100);
             }
+            const warning = document.getElementById('text-answer-warning');
+            warning.textContent = '';
+            warning.classList.add('hidden');
         }
 
         function checkCloseCallAchievement(inputName) {
@@ -1376,10 +1394,11 @@
             
             const matchedCountry = findCountry(userVal);
             if (!matchedCountry) {
-                showToast('등록되지 않은 국가 이름입니다. 오타를 확인해 주세요.');
+                updateTextAnswerWarning();
                 input.focus();
                 return;
             }
+            updateTextAnswerWarning();
 
             const target = gameState.currentQ;
             const isCorrect = (matchedCountry.name === target.name);
@@ -1818,6 +1837,7 @@
             document.getElementById('text-answer')?.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') submitTextAnswer();
             });
+            document.getElementById('text-answer')?.addEventListener('input', updateTextAnswerWarning);
             document.getElementById('search-country-input')?.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') searchCountryName();
             });
