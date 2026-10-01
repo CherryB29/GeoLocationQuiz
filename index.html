@@ -1044,6 +1044,22 @@
             }
         }
 
+        function renderGameCoords() {
+            const coordsEl = document.getElementById('game-coords');
+            if (!coordsEl || !gameState || !gameState.currentQ) return;
+
+            if (typeof gameState.displayedLat !== 'number' || typeof gameState.displayedLng !== 'number') {
+                gameState.displayedLat = Number(gameState.currentQ.lat.toFixed(2));
+                gameState.displayedLng = Number(gameState.currentQ.lng.toFixed(2));
+            }
+
+            const latDir = gameState.displayedLat >= 0 ? 'N' : 'S';
+            const lngDir = gameState.displayedLng >= 0 ? 'E' : 'W';
+
+            coordsEl.textContent = 
+                `${Math.abs(gameState.displayedLat)}° ${latDir}, ${Math.abs(gameState.displayedLng)}° ${lngDir}`;
+        }
+
         function setMapVisibility(isVisible) {
             const gameScreen = document.getElementById('screen-game');
             const mapContainer = document.getElementById('game-map-container');
@@ -1062,6 +1078,7 @@
                 desktopPlaceholder.classList.remove('lg:flex');
                 mapContainer.classList.remove('active');
             }
+            renderGameCoords();
         }
 
         function showScreen(screenId) {
@@ -1074,12 +1091,18 @@
 
             if(screenId === 'screen-game') {
                 const mapContainer = document.getElementById('game-map-container');
-                if(window.innerWidth >= 1024) {
-                    document.getElementById('desktop-map-placeholder').appendChild(mapContainer);
-                } else {
-                    document.getElementById('mobile-map-placeholder').appendChild(mapContainer);
+                const targetPlaceholder = window.innerWidth >= 1024
+                    ? document.getElementById('desktop-map-placeholder')
+                    : document.getElementById('mobile-map-placeholder');
+                if (targetPlaceholder && mapContainer.parentElement !== targetPlaceholder) {
+                    targetPlaceholder.appendChild(mapContainer);
                 }
-                setTimeout(() => { if(gameMap) gameMap.invalidateSize(); }, 100);
+                renderGameCoords();
+                requestAnimationFrame(renderGameCoords);
+                setTimeout(() => {
+                    if (gameMap) gameMap.invalidateSize();
+                    renderGameCoords();
+                }, 100);
             }
             if(screenId === 'screen-review') {
                 setTimeout(invalidateReviewMap, 100);
@@ -1273,11 +1296,8 @@
             gameState.displayedLat = Number(gameState.currentQ.lat.toFixed(2));
             gameState.displayedLng = Number(gameState.currentQ.lng.toFixed(2));
 
-            const latDir = gameState.displayedLat >= 0 ? 'N' : 'S';
-            const lngDir = gameState.displayedLng >= 0 ? 'E' : 'W';
-            
-            document.getElementById('game-coords').textContent = 
-                `${Math.abs(gameState.displayedLat)}° ${latDir}, ${Math.abs(gameState.displayedLng)}° ${lngDir}`;
+            renderGameCoords();
+            requestAnimationFrame(renderGameCoords);
 
             if (settings.multiChoice) {
                 renderMultiChoice();
@@ -1530,6 +1550,7 @@
 
             setTimeout(() => { 
                 gameMap.invalidateSize(); 
+                renderGameCoords();
                 const lat = gameState.currentQ.lat;
                 const lng = gameState.currentQ.lng;
                 gameMap.flyTo([lat, lng], 5, { duration: 1.5 });
@@ -1877,17 +1898,17 @@
         window.addEventListener('resize', () => {
             if (document.getElementById('screen-game').classList.contains('active')) {
                 const mapContainer = document.getElementById('game-map-container');
-                if(window.innerWidth >= 1024) {
-                    if (mapContainer.parentElement.id !== 'desktop-map-placeholder') {
-                        document.getElementById('desktop-map-placeholder').appendChild(mapContainer);
-                        setTimeout(() => { if(gameMap) gameMap.invalidateSize(); }, 50);
-                    }
-                } else {
-                    if (mapContainer.parentElement.id !== 'mobile-map-placeholder') {
-                        document.getElementById('mobile-map-placeholder').appendChild(mapContainer);
-                        setTimeout(() => { if(gameMap) gameMap.invalidateSize(); }, 50);
-                    }
+                const targetPlaceholder = window.innerWidth >= 1024
+                    ? document.getElementById('desktop-map-placeholder')
+                    : document.getElementById('mobile-map-placeholder');
+                if (targetPlaceholder && mapContainer.parentElement !== targetPlaceholder) {
+                    targetPlaceholder.appendChild(mapContainer);
+                    setTimeout(() => {
+                        if (gameMap) gameMap.invalidateSize();
+                        renderGameCoords();
+                    }, 50);
                 }
+                renderGameCoords();
             }
             if (document.getElementById('screen-review').classList.contains('active')) {
                 invalidateReviewMap();
