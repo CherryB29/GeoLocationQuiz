@@ -557,6 +557,10 @@
                     <div class="text-lg font-semibold bg-toss-surface inline-block px-6 py-2 rounded-full text-toss-text border border-toss-border">
                         맞춘 문제: <span id="result-correct" class="text-toss-blue">10</span> / 10
                     </div>
+                    <div class="mt-4 flex items-center justify-center gap-2 flex-wrap">
+                        <span id="result-mode-answer" class="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-toss-subtext">객관식</span>
+                        <span id="result-mode-map" class="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-toss-subtext">지도 힌트 사용</span>
+                    </div>
                 </div>
             </div>
             
@@ -832,11 +836,16 @@
         // 업적 상태 (Unlocked IDs)
         let unlockedAchievements = [];
 
+        // 세계일주 업적 진행도 (정답으로 맞춘 적이 있는 국가 이름 집합)
+        let worldTourCountries = new Set();
+
         // 업적 목록 메타데이터
         const ACHIEVEMENTS_DATA = {
             FIRST_WIN: { id: 'FIRST_WIN', icon: 'fa-trophy', color: 'text-yellow-500', title: '첫 승리', desc: '처음으로 게임을 끝까지 완료하세요.', hidden: false },
             PERFECT_SCORE: { id: 'PERFECT_SCORE', icon: 'fa-medal', color: 'text-purple-500', title: '완벽주의자', desc: '주관식 및 지도 끄기 모드로 100점을 달성하세요.', hidden: false },
-            TEN_GAMES: { id: 'TEN_GAMES', icon: 'fa-gamepad', color: 'text-blue-500', title: '지리덕후', desc: '게임을 10번 플레이하세요.', hidden: false },
+            TEN_GAMES: { id: 'TEN_GAMES', icon: 'fa-gamepad', color: 'text-blue-500', title: '지리덕후', desc: '게임을 50번 플레이하세요.', hidden: false, progress: () => ({ current: userStats.gamesPlayed, max: 50 }) },
+            WORLD_TOUR: { id: 'WORLD_TOUR', icon: 'fa-earth-asia', color: 'text-green-600', title: '세계일주', desc: '출제 가능한 모든 국가를 한 번씩 정답으로 맞춰보세요.', hidden: false, progress: () => ({ current: worldTourCountries.size, max: quizCountries.length }) },
+            MC_PERFECT: { id: 'MC_PERFECT', icon: 'fa-bullseye', color: 'text-pink-500', title: '찍은 거 아니죠?', desc: '객관식 모드로 100점을 달성하세요. (지도 힌트 사용 여부 무관)', hidden: false, progress: () => ({ current: unlockedAchievements.includes('MC_PERFECT') ? 1 : 0, max: 1 }) },
             SPEED_DEMON: { id: 'SPEED_DEMON', icon: 'fa-bolt', color: 'text-orange-500', title: '빛보다 빠른 손', desc: '0.3초 안에 정답을 맞추세요.', hidden: true },
             ZERO_SCORE: { id: 'ZERO_SCORE', icon: 'fa-face-dizzy', color: 'text-gray-500', title: '일부러 틀리기도 힘들다', desc: '한 게임에서 0점을 기록하세요.', hidden: true },
             ATLANTIS: { id: 'ATLANTIS', icon: 'fa-water', color: 'text-blue-400', title: '아틀란티스', desc: '지도 검색에서 바다를 검색하세요.', hidden: true },
@@ -853,7 +862,9 @@
             displayedLat: 0,
             displayedLng: 0,
             answered: false,
-            questionStartTime: 0 // 빛보다 빠른 손 업적 측정을 위한 변수
+            questionStartTime: 0, // 빛보다 빠른 손 업적 측정을 위한 변수
+            usedMultiChoice: true, // 게임 시작 시점의 객관식/주관식 설정 스냅샷 (결과 화면용)
+            usedMapHint: true // 게임 시작 시점의 지도 힌트 설정 스냅샷 (결과 화면용)
         };
 
         let gameMap, gameMarker;
@@ -1045,6 +1056,15 @@
 
             const savedAchievements = localStorage.getItem('geoGuessAchievements');
             if(savedAchievements) unlockedAchievements = JSON.parse(savedAchievements);
+
+            const savedWorldTour = localStorage.getItem('geoGuessWorldTour');
+            if (savedWorldTour) {
+                try {
+                    worldTourCountries = new Set(JSON.parse(savedWorldTour).filter(name => quizCountries.some(c => c.name === name)));
+                } catch (e) {
+                    worldTourCountries = new Set();
+                }
+            }
         }
 
         function saveStats() {
@@ -1221,6 +1241,17 @@
             }
         }
 
+        // 세계일주 업적: 출제 대상 국가를 정답으로 맞출 때마다 진행도를 기록
+        function recordWorldTourProgress(countryName) {
+            if (!quizCountries.some(c => c.name === countryName)) return;
+            if (worldTourCountries.has(countryName)) return;
+            worldTourCountries.add(countryName);
+            localStorage.setItem('geoGuessWorldTour', JSON.stringify([...worldTourCountries]));
+            if (worldTourCountries.size >= quizCountries.length) {
+                unlockAchievement('WORLD_TOUR');
+            }
+        }
+
         function showModal(title, desc, confirmText, confirmClass, onConfirm) {
             const overlay = document.getElementById('modal-overlay');
             document.getElementById('modal-title').textContent = title;
@@ -1316,6 +1347,10 @@
             
             document.getElementById('game-score').textContent = '0점';
             setMapVisibility(settings.mapHint);
+
+            // 결과 화면에서 정확한 모드를 표시하기 위해 게임 시작 시점의 설정을 스냅샷으로 저장
+            gameState.usedMultiChoice = settings.multiChoice;
+            gameState.usedMapHint = settings.mapHint;
 
             if (settings.multiChoice) {
                 document.getElementById('input-multi').classList.remove('hidden');
@@ -1496,6 +1531,9 @@
                     unlockAchievement('CLOSE_CALL');
                 }
 
+                // 세계일주 업적 진행도 기록
+                recordWorldTourProgress(gameState.currentQ.name);
+
                 const wrongCount = 3 - gameState.tries;
                 const earnedScore = 10 - (wrongCount * 4);
                 gameState.score += earnedScore;
@@ -1558,6 +1596,9 @@
                 if (gameState.currentQ.name === '북한') {
                     unlockAchievement('CLOSE_CALL');
                 }
+
+                // 세계일주 업적 진행도 기록
+                recordWorldTourProgress(gameState.currentQ.name);
 
                 const wrongCount = 3 - gameState.tries;
                 const earnedScore = 10 - (wrongCount * 4);
@@ -1667,11 +1708,16 @@
             // 백분율로 맞춘 문제를 대략 계산 (점수 기반이 아닌 정답 횟수 기반을 원한다면 추가 로직 필요. 여기선 점수 기반 단순화 유지)
             // 정확한 맞춘 문제를 구하기 위해 오답 처리시 계산된 score를 사용중이었으므로, 완벽한 점수는 100점임.
             document.getElementById('result-correct').textContent = Math.round(gameState.score / 10);
-            
+
+            // 게임 시작 시점에 캡처해둔 설정값으로 모드 표시 (진행 중/이후 설정 변경과 무관하게 정확한 결과 표시)
+            document.getElementById('result-mode-answer').textContent = gameState.usedMultiChoice ? '객관식' : '주관식';
+            document.getElementById('result-mode-map').textContent = gameState.usedMapHint ? '지도 힌트 사용' : '지도 힌트 미사용';
+
             // 게임 완료 업적 체크
             unlockAchievement('FIRST_WIN');
-            if (userStats.gamesPlayed >= 10) unlockAchievement('TEN_GAMES');
-            if (gameState.score === 100 && !settings.multiChoice && !settings.mapHint) unlockAchievement('PERFECT_SCORE');
+            if (userStats.gamesPlayed >= 50) unlockAchievement('TEN_GAMES');
+            if (gameState.score === 100 && !gameState.usedMultiChoice && !gameState.usedMapHint) unlockAchievement('PERFECT_SCORE');
+            if (gameState.score === 100 && gameState.usedMultiChoice) unlockAchievement('MC_PERFECT');
             if (gameState.score === 0) unlockAchievement('ZERO_SCORE');
 
             showScreen('screen-result');
@@ -1758,6 +1804,13 @@
             Object.values(ACHIEVEMENTS_DATA).forEach(ach => {
                 const isUnlocked = unlockedAchievements.includes(ach.id);
                 const el = document.createElement('div');
+
+                let progressHtml = '';
+                if (typeof ach.progress === 'function' && !ach.hidden) {
+                    const p = ach.progress();
+                    const current = isUnlocked ? p.max : Math.min(p.current, p.max);
+                    progressHtml = `<p class="text-xs font-semibold mt-1 ${isUnlocked ? 'text-toss-green' : 'text-toss-blue'}">${current} / ${p.max}</p>`;
+                }
                 
                 if (isUnlocked) {
                     el.className = 'card p-4 border border-toss-border flex items-center gap-4 bg-white';
@@ -1768,6 +1821,7 @@
                         <div class="flex-1">
                             <p class="font-bold text-toss-text text-base">${ach.title}</p>
                             <p class="text-sm text-toss-subtext leading-tight mt-0.5">${ach.desc}</p>
+                            ${progressHtml}
                         </div>
                         <div class="text-toss-green opacity-80"><i class="fa-solid fa-circle-check text-xl"></i></div>
                     `;
@@ -1782,6 +1836,7 @@
                         <div class="flex-1">
                             <p class="font-bold text-gray-500 text-base">${titleText}</p>
                             <p class="text-sm text-gray-400 leading-tight mt-0.5">${descText}</p>
+                            ${progressHtml}
                         </div>
                     `;
                 }
