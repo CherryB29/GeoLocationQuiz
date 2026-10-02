@@ -455,10 +455,10 @@
             
             <div class="flex justify-between items-center">
                 <div>
-                    <h3 class="text-lg font-semibold text-toss-red">통계 초기화</h3>
-                    <p class="text-sm text-toss-subtext">업적을 제외한 통계가 삭제됩니다.</p>
+                    <h3 class="text-lg font-semibold text-toss-red">데이터 초기화</h3>
+                    <p class="text-sm text-toss-subtext">통계, 업적, 설정, 오답 기록 등 모든 앱 데이터가 삭제됩니다.</p>
                 </div>
-                <button onclick="confirmClearStats()" class="btn py-2 px-4 text-sm font-semibold bg-red-50 text-toss-red border border-red-100 hover:bg-red-100 transition rounded-xl">초기화</button>
+                <button onclick="confirmClearData()" class="btn py-2 px-4 text-sm font-semibold bg-red-50 text-toss-red border border-red-100 hover:bg-red-100 transition rounded-xl">모두 삭제</button>
             </div>
         </div>
     </div>
@@ -1071,13 +1071,18 @@
             localStorage.setItem('geoGuessStats', JSON.stringify(userStats));
         }
 
-        function confirmClearStats() {
+        function confirmClearData() {
             showModal(
-                '통계 초기화',
-                '정말로 모든 통계를 초기화하시겠습니까? (업적은 유지됩니다)',
-                '초기화',
+                '모든 데이터 초기화',
+                '통계, 업적과 진행도, 설정, 오답 기록을 포함한 모든 앱 데이터가 삭제됩니다. 계속하시겠습니까?',
+                '모두 삭제',
                 'bg-toss-red',
                 () => {
+                    settings = {
+                        mapHint: true,
+                        multiChoice: true,
+                        enableAchievements: true
+                    };
                     userStats = {
                         gamesPlayed: 0, totalScore: 0, totalQuestions: 0, correctAnswers: 0,
                         continentStats: {
@@ -1086,8 +1091,14 @@
                             Africa: { total: 0, correct: 0 }, Oceania: { total: 0, correct: 0 }
                         }
                     };
-                    localStorage.removeItem('geoGuessStats');
-                    showToast('통계가 초기화되었습니다.');
+                    unlockedAchievements = [];
+                    worldTourCountries = new Set();
+                    ['geoGuessSettings', 'geoGuessStats', 'geoGuessAchievements', 'geoGuessWorldTour', 'geoGuessNotes']
+                        .forEach(key => localStorage.removeItem(key));
+                    document.getElementById('setting-map').checked = settings.mapHint;
+                    document.getElementById('setting-multi').checked = settings.multiChoice;
+                    document.getElementById('setting-achievements').checked = settings.enableAchievements;
+                    showToast('모든 앱 데이터가 초기화되었습니다.');
                 }
             );
         }
@@ -1418,10 +1429,8 @@
             warning.classList.add('hidden');
         }
 
-        function checkCloseCallAchievement(inputName) {
-            const currentName = gameState.currentQ.name;
-            const checkNames = ['일본', '조선민주주의인민공화국', '북한', '북조선', 'japan'];
-            if (currentName === '대한민국' && checkNames.includes(inputName)) {
+        function checkCloseCallAchievement(targetName, answerName) {
+            if (targetName === '북한' && answerName === targetName) {
                 unlockAchievement('CLOSE_CALL');
             }
         }
@@ -1526,10 +1535,7 @@
                     unlockAchievement('SPEED_DEMON');
                 }
                 
-                // 가깝고도 먼 이웃 업적 체크 (북한을 맞췄을 때)
-                if (gameState.currentQ.name === '북한') {
-                    unlockAchievement('CLOSE_CALL');
-                }
+                checkCloseCallAchievement(gameState.currentQ.name, selectedName);
 
                 // 세계일주 업적 진행도 기록
                 recordWorldTourProgress(gameState.currentQ.name);
@@ -1592,10 +1598,7 @@
                     unlockAchievement('SPEED_DEMON'); // 타자가 0.3초 컷이면 인정!
                 }
                 
-                // 가깝고도 먼 이웃 업적 체크 (북한을 맞췄을 때)
-                if (gameState.currentQ.name === '북한') {
-                    unlockAchievement('CLOSE_CALL');
-                }
+                checkCloseCallAchievement(target.name, matchedCountry.name);
 
                 // 세계일주 업적 진행도 기록
                 recordWorldTourProgress(gameState.currentQ.name);
