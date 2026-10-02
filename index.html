@@ -647,142 +647,142 @@
 
     <script>
         const countryData = [
-            { name: "대한민국", aliases: ["한국", "남한", "코리아", "korea", "대한민국"], lat: 37.5665, lng: 126.9780 },
-            { name: "북한", aliases: ["조선민주주의인민공화국", "북한", "북조선", "조선"], lat: 39.0392, lng: 125.7625 },
-            { name: "일본", aliases: ["japan", "일국"], lat: 35.6762, lng: 139.6503 },
-            { name: "중국", aliases: ["중화인민공화국", "중국", "china"], lat: 39.9042, lng: 116.4074 },
-            { name: "대만", aliases: ["타이완", "taiwan"], lat: 25.0330, lng: 121.5654 },
-            { name: "몽골", aliases: ["몽고", "mongolia"], lat: 47.9212, lng: 106.9186 },
-            { name: "미국", aliases: ["미합중국", "usa", "us", "america"], lat: 38.9072, lng: -77.0369 },
-            { name: "영국", aliases: ["uk", "잉글랜드"], lat: 51.5074, lng: -0.1278 },
-            { name: "프랑스", aliases: ["france"], lat: 48.8566, lng: 2.3522 },
-            { name: "독일", aliases: ["germany", "도이칠란트"], lat: 52.5200, lng: 13.4050 },
-            { name: "이탈리아", aliases: ["italy", "이태리"], lat: 41.9028, lng: 12.4964 },
-            { name: "스페인", aliases: ["spain", "에스파냐"], lat: 40.4168, lng: -3.7038 },
-            { name: "캐나다", aliases: ["canada"], lat: 45.4215, lng: -75.6972 },
-            { name: "호주", aliases: ["오스트레일리아", "australia"], lat: -35.2820, lng: 149.1286 },
-            { name: "브라질", aliases: ["brazil"], lat: -15.7942, lng: -47.8822 },
-            { name: "인도", aliases: ["india"], lat: 28.6139, lng: 77.2090 },
-            { name: "러시아", aliases: ["russia", "불곰국"], lat: 55.7558, lng: 37.6173 },
-            { name: "멕시코", aliases: ["mexico"], lat: 19.4326, lng: -99.1332 },
-            { name: "아르헨티나", aliases: ["argentina"], lat: -34.6037, lng: -58.3816 },
-            { name: "이집트", aliases: ["egypt"], lat: 30.0444, lng: 31.2357 },
-            { name: "남아프리카 공화국", aliases: ["남아공", "southafrica"], lat: -25.7479, lng: 28.2293 },
-            { name: "인도네시아", aliases: ["indonesia", "인니"], lat: -6.2088, lng: 106.8456 },
-            { name: "태국", aliases: ["타이", "thailand"], lat: 13.7563, lng: 100.5018 },
-            { name: "베트남", aliases: ["vietnam"], lat: 21.0285, lng: 105.8542 },
-            { name: "필리핀", aliases: ["philippines"], lat: 14.5995, lng: 120.9842 },
-            { name: "말레이시아", aliases: ["malaysia"], lat: 3.1390, lng: 101.6869 },
-            { name: "싱가포르", aliases: ["singapore", "싱가폴"], lat: 1.3521, lng: 103.8198 },
-            { name: "뉴질랜드", aliases: ["newzealand", "nz"], lat: -41.2865, lng: 174.7762 },
-            { name: "스위스", aliases: ["swiss", "switzerland"], lat: 46.9480, lng: 7.4474 },
-            { name: "네덜란드", aliases: ["netherlands", "holland", "홀란드"], lat: 52.3676, lng: 4.9041 },
-            { name: "벨기에", aliases: ["belgium"], lat: 50.8503, lng: 4.3517 },
-            { name: "스웨덴", aliases: ["sweden"], lat: 59.3293, lng: 18.0686 },
-            { name: "노르웨이", aliases: ["norway"], lat: 59.9139, lng: 10.7522 },
-            { name: "덴마크", aliases: ["denmark"], lat: 55.6761, lng: 12.5683 },
-            { name: "핀란드", aliases: ["finland"], lat: 60.1695, lng: 24.9354 },
-            { name: "튀르키예", aliases: ["터키", "turkey"], lat: 39.9208, lng: 32.8541 },
-            { name: "그리스", aliases: ["greece"], lat: 37.9838, lng: 23.7275 },
-            { name: "사우디아라비아", aliases: ["사우디", "saudiarabia"], lat: 24.7136, lng: 46.6753 },
-            { name: "아랍에미리트", aliases: ["uae", "아랍에미레이트", "에미리트"], lat: 24.4539, lng: 54.3773 },
-            { name: "이스라엘", aliases: ["israel"], lat: 31.7683, lng: 35.2137 },
-            { name: "케냐", aliases: ["kenya"], lat: -1.2921, lng: 36.8219 },
-            { name: "나이지리아", aliases: ["nigeria"], lat: 9.0579, lng: 7.4951 },
-            { name: "콜롬비아", aliases: ["colombia"], lat: 4.7110, lng: -74.0721 },
-            { name: "칠레", aliases: ["chile"], lat: -33.4489, lng: -70.6693 },
-            { name: "페루", aliases: ["peru"], lat: -12.0464, lng: -77.0428 },
-            { name: "폴란드", aliases: ["poland"], lat: 52.2297, lng: 21.0122 },
-            { name: "체코", aliases: ["czech", "체코공화국"], lat: 50.0755, lng: 14.4378 },
-            { name: "헝가리", aliases: ["hungary"], lat: 47.4979, lng: 19.0402 },
-            { name: "오스트리아", aliases: ["austria"], lat: 48.2082, lng: 16.3738 },
-            { name: "우크라이나", aliases: ["ukraine"], lat: 50.4501, lng: 30.5234 },
-            { name: "포르투갈", aliases: ["portugal"], lat: 38.7223, lng: -9.1393 },
-            { name: "아일랜드", aliases: ["ireland"], lat: 53.3498, lng: -6.2603 },
-            { name: "아이슬란드", aliases: ["iceland"], lat: 64.1466, lng: -21.9426 },
-            { name: "캄보디아", aliases: ["cambodia"], lat: 11.5564, lng: 104.9282 },
-            { name: "라오스", aliases: ["laos"], lat: 17.9757, lng: 102.6331 },
-            { name: "미얀마", aliases: ["버마"], lat: 19.7633, lng: 96.0785 },
-            { name: "방글라데시", aliases: ["bangladesh"], lat: 23.8103, lng: 90.4125 },
-            { name: "스리랑카", aliases: ["srilanka"], lat: 6.9271, lng: 79.8612 },
-            { name: "파키스탄", aliases: ["pakistan"], lat: 33.6844, lng: 73.0479 },
-            { name: "아프가니스탄", aliases: ["afghanistan"], lat: 34.5553, lng: 69.2075 },
-            { name: "이란", aliases: ["iran"], lat: 35.6892, lng: 51.3890 },
-            { name: "이라크", aliases: ["iraq"], lat: 33.3152, lng: 44.3661 },
-            { name: "시리아", aliases: ["syria"], lat: 33.5138, lng: 36.2765 },
-            { name: "요르단", aliases: ["jordan"], lat: 31.9454, lng: 35.9284 },
-            { name: "레바논", aliases: ["lebanon"], lat: 33.8938, lng: 35.5018 },
-            { name: "예멘", aliases: ["yemen"], lat: 15.3694, lng: 44.1910 },
-            { name: "오만", aliases: ["oman"], lat: 23.5859, lng: 58.4059 },
-            { name: "카타르", aliases: ["qatar"], lat: 25.2854, lng: 51.5310 },
-            { name: "바레인", aliases: ["bahrain"], lat: 26.2235, lng: 50.5822 },
-            { name: "쿠웨이트", aliases: ["kuwait"], lat: 29.3759, lng: 47.9774 },
-            { name: "우즈베키스탄", aliases: ["우즈벡"], lat: 41.2995, lng: 69.2401 },
-            { name: "카자흐스탄", aliases: ["kazakhstan"], lat: 51.1694, lng: 71.4491 },
-            { name: "타지키스탄", aliases: ["tajikistan"], lat: 38.5598, lng: 68.7870 },
-            { name: "키르기스스탄", aliases: ["키르기즈스탄"], lat: 42.8746, lng: 74.5698 },
-            { name: "투르크메니스탄", aliases: ["turkmenistan"], lat: 37.9601, lng: 58.3261 },
-            { name: "조지아", aliases: ["그루지야"], lat: 41.7151, lng: 44.8271 },
-            { name: "아르메니아", aliases: ["armenia"], lat: 40.1872, lng: 44.5152 },
-            { name: "아제르바이잔", aliases: ["azerbaijan"], lat: 40.4093, lng: 49.8671 },
-            { name: "에스토니아", aliases: ["estonia"], lat: 59.4370, lng: 24.7536 },
-            { name: "라트비아", aliases: ["latvia"], lat: 56.9496, lng: 24.1052 },
-            { name: "리투아니아", aliases: ["lithuania"], lat: 54.6872, lng: 25.2797 },
-            { name: "벨라루스", aliases: ["백러시아"], lat: 53.9045, lng: 27.5615 },
-            { name: "몰도바", aliases: ["moldova"], lat: 47.0105, lng: 28.8638 },
-            { name: "루마니아", aliases: ["romania"], lat: 44.4268, lng: 26.1025 },
-            { name: "불가리아", aliases: ["bulgaria"], lat: 42.6977, lng: 23.3219 },
-            { name: "세르비아", aliases: ["serbia"], lat: 44.8125, lng: 20.4612 },
-            { name: "몬테네그로", aliases: ["montenegro"], lat: 42.4304, lng: 19.2594 },
-            { name: "크로아티아", aliases: ["croatia"], lat: 45.8150, lng: 15.9819 },
-            { name: "보스니아 헤르체고비나", aliases: ["보스니아"], lat: 43.8563, lng: 18.4131 },
-            { name: "슬로베니아", aliases: ["slovenia"], lat: 46.0569, lng: 14.5058 },
-            { name: "북마케도니아", aliases: ["마케도니아"], lat: 42.0024, lng: 21.4361 },
-            { name: "알바니아", aliases: ["albania"], lat: 41.3275, lng: 19.8187 },
-            { name: "슬로바키아", aliases: ["slovakia"], lat: 48.1486, lng: 17.1077 },
-            { name: "룩셈부르크", aliases: ["luxembourg"], lat: 49.6116, lng: 6.1319 },
-            { name: "모로코", aliases: ["morocco"], lat: 34.0209, lng: -6.8416 },
-            { name: "알제리", aliases: ["algeria"], lat: 36.7538, lng: 3.0588 },
-            { name: "튀니지", aliases: ["tunisia"], lat: 36.8065, lng: 10.1815 },
-            { name: "리비아", aliases: ["libya"], lat: 32.8872, lng: 13.1913 },
-            { name: "수단", aliases: ["sudan"], lat: 15.5007, lng: 32.5599 },
-            { name: "에티오피아", aliases: ["ethiopia"], lat: 9.0227, lng: 38.7468 },
-            { name: "소말리아", aliases: ["somalia"], lat: 2.0469, lng: 45.3182 },
-            { name: "우간다", aliases: ["uganda"], lat: 0.3476, lng: 32.5825 },
-            { name: "르완다", aliases: ["rwanda"], lat: -1.9403, lng: 30.0588 },
-            { name: "탄자니아", aliases: ["tanzania"], lat: -6.1630, lng: 35.7516 },
-            { name: "마다가스카르", aliases: ["madagascar"], lat: -18.8792, lng: 47.5079 },
-            { name: "모잠비크", aliases: ["mozambique"], lat: -25.9692, lng: 32.5732 },
-            { name: "잠비아", aliases: ["zambia"], lat: -15.3875, lng: 28.3228 },
-            { name: "짐바브웨", aliases: ["zimbabwe"], lat: -17.8252, lng: 31.0335 },
-            { name: "보츠와나", aliases: ["botswana"], lat: -24.6282, lng: 25.9231 },
-            { name: "나미비아", aliases: ["namibia"], lat: -22.5597, lng: 17.0832 },
-            { name: "앙골라", aliases: ["angola"], lat: -8.8147, lng: 13.2302 },
-            { name: "콩고 민주 공화국", aliases: ["민주콩고", "콩고민주공화국", "콩고"], lat: -4.4419, lng: 15.2663 },
-            { name: "카메룬", aliases: ["cameroon"], lat: 3.8480, lng: 11.5021 },
-            { name: "중앙아프리카 공화국", aliases: ["중아공", "중앙아프리카공화국"], lat: 4.3947, lng: 18.5582 },
-            { name: "차드", aliases: ["chad"], lat: 12.1348, lng: 15.0557 },
-            { name: "니제르", aliases: ["niger"], lat: 13.5116, lng: 2.1254 },
-            { name: "말리", aliases: ["mali"], lat: 12.6392, lng: -8.0029 },
-            { name: "세네갈", aliases: ["senegal"], lat: 14.7167, lng: -17.4677 },
-            { name: "모리타니", aliases: ["mauritania"], lat: 18.0735, lng: -15.9582 },
-            { name: "기니", aliases: ["guinea"], lat: 9.5092, lng: -13.7122 },
-            { name: "코트디부아르", aliases: ["아이보리코스트"], lat: 6.8276, lng: -5.2893 },
-            { name: "가나", aliases: ["ghana"], lat: 5.6037, lng: -0.1870 },
-            { name: "과테말라", aliases: ["guatemala"], lat: 14.6349, lng: -90.5069 },
-            { name: "엘살바도르", aliases: ["elsalvador"], lat: 13.6929, lng: -89.2182 },
-            { name: "온두라스", aliases: ["honduras"], lat: 14.0723, lng: -87.1921 },
-            { name: "니카라과", aliases: ["nicaragua"], lat: 12.1150, lng: -86.2362 },
-            { name: "코스타리카", aliases: ["costarica"], lat: 9.9281, lng: -84.0907 },
-            { name: "파나마", aliases: ["panama"], lat: 8.9824, lng: -79.5199 },
-            { name: "쿠바", aliases: ["cuba"], lat: 23.1136, lng: -82.3666 },
-            { name: "자메이카", aliases: ["jamaica"], lat: 17.9716, lng: -76.7920 },
-            { name: "아이티", aliases: ["haiti"], lat: 18.5392, lng: -72.3364 },
-            { name: "베네수엘라", aliases: ["venezuela"], lat: 10.4806, lng: -66.9036 },
-            { name: "에콰도르", aliases: ["ecuador"], lat: -0.1807, lng: -78.4678 },
-            { name: "볼리비아", aliases: ["bolivia"], lat: -16.4897, lng: -68.1193 },
-            { name: "파라과이", aliases: ["paraguay"], lat: -25.2637, lng: -57.5759 },
-            { name: "우루과이", aliases: ["uruguay"], lat: -34.9011, lng: -56.1645 }
+            { name: "대한민국", aliases: ["한국", "남한", "코리아", "korea", "대한민국"], lat: 37.5665, lng: 126.9780, iso: "KOR" },
+            { name: "북한", aliases: ["조선민주주의인민공화국", "북한", "북조선", "조선"], lat: 39.0392, lng: 125.7625, iso: "PRK" },
+            { name: "일본", aliases: ["japan", "일국"], lat: 35.6762, lng: 139.6503, iso: "JPN" },
+            { name: "중국", aliases: ["중화인민공화국", "중국", "china"], lat: 39.9042, lng: 116.4074, iso: "CHN" },
+            { name: "대만", aliases: ["타이완", "taiwan"], lat: 25.0330, lng: 121.5654, iso: "TWN" },
+            { name: "몽골", aliases: ["몽고", "mongolia"], lat: 47.9212, lng: 106.9186, iso: "MNG" },
+            { name: "미국", aliases: ["미합중국", "usa", "us", "america"], lat: 38.9072, lng: -77.0369, iso: "USA" },
+            { name: "영국", aliases: ["uk", "잉글랜드"], lat: 51.5074, lng: -0.1278, iso: "GBR" },
+            { name: "프랑스", aliases: ["france"], lat: 48.8566, lng: 2.3522, iso: "FRA" },
+            { name: "독일", aliases: ["germany", "도이칠란트"], lat: 52.5200, lng: 13.4050, iso: "DEU" },
+            { name: "이탈리아", aliases: ["italy", "이태리"], lat: 41.9028, lng: 12.4964, iso: "ITA" },
+            { name: "스페인", aliases: ["spain", "에스파냐"], lat: 40.4168, lng: -3.7038, iso: "ESP" },
+            { name: "캐나다", aliases: ["canada"], lat: 45.4215, lng: -75.6972, iso: "CAN" },
+            { name: "호주", aliases: ["오스트레일리아", "australia"], lat: -35.2820, lng: 149.1286, iso: "AUS" },
+            { name: "브라질", aliases: ["brazil"], lat: -15.7942, lng: -47.8822, iso: "BRA" },
+            { name: "인도", aliases: ["india"], lat: 28.6139, lng: 77.2090, iso: "IND" },
+            { name: "러시아", aliases: ["russia", "불곰국"], lat: 55.7558, lng: 37.6173, iso: "RUS" },
+            { name: "멕시코", aliases: ["mexico"], lat: 19.4326, lng: -99.1332, iso: "MEX" },
+            { name: "아르헨티나", aliases: ["argentina"], lat: -34.6037, lng: -58.3816, iso: "ARG" },
+            { name: "이집트", aliases: ["egypt"], lat: 30.0444, lng: 31.2357, iso: "EGY" },
+            { name: "남아프리카 공화국", aliases: ["남아공", "southafrica"], lat: -25.7479, lng: 28.2293, iso: "ZAF" },
+            { name: "인도네시아", aliases: ["indonesia", "인니"], lat: -6.2088, lng: 106.8456, iso: "IDN" },
+            { name: "태국", aliases: ["타이", "thailand"], lat: 13.7563, lng: 100.5018, iso: "THA" },
+            { name: "베트남", aliases: ["vietnam"], lat: 21.0285, lng: 105.8542, iso: "VNM" },
+            { name: "필리핀", aliases: ["philippines"], lat: 14.5995, lng: 120.9842, iso: "PHL" },
+            { name: "말레이시아", aliases: ["malaysia"], lat: 3.1390, lng: 101.6869, iso: "MYS" },
+            { name: "싱가포르", aliases: ["singapore", "싱가폴"], lat: 1.3521, lng: 103.8198, iso: "SGP" },
+            { name: "뉴질랜드", aliases: ["newzealand", "nz"], lat: -41.2865, lng: 174.7762, iso: "NZL" },
+            { name: "스위스", aliases: ["swiss", "switzerland"], lat: 46.9480, lng: 7.4474, iso: "CHE" },
+            { name: "네덜란드", aliases: ["netherlands", "holland", "홀란드"], lat: 52.3676, lng: 4.9041, iso: "NLD" },
+            { name: "벨기에", aliases: ["belgium"], lat: 50.8503, lng: 4.3517, iso: "BEL" },
+            { name: "스웨덴", aliases: ["sweden"], lat: 59.3293, lng: 18.0686, iso: "SWE" },
+            { name: "노르웨이", aliases: ["norway"], lat: 59.9139, lng: 10.7522, iso: "NOR" },
+            { name: "덴마크", aliases: ["denmark"], lat: 55.6761, lng: 12.5683, iso: "DNK" },
+            { name: "핀란드", aliases: ["finland"], lat: 60.1695, lng: 24.9354, iso: "FIN" },
+            { name: "튀르키예", aliases: ["터키", "turkey"], lat: 39.9208, lng: 32.8541, iso: "TUR" },
+            { name: "그리스", aliases: ["greece"], lat: 37.9838, lng: 23.7275, iso: "GRC" },
+            { name: "사우디아라비아", aliases: ["사우디", "saudiarabia"], lat: 24.7136, lng: 46.6753, iso: "SAU" },
+            { name: "아랍에미리트", aliases: ["uae", "아랍에미레이트", "에미리트"], lat: 24.4539, lng: 54.3773, iso: "ARE" },
+            { name: "이스라엘", aliases: ["israel"], lat: 31.7683, lng: 35.2137, iso: "ISR" },
+            { name: "케냐", aliases: ["kenya"], lat: -1.2921, lng: 36.8219, iso: "KEN" },
+            { name: "나이지리아", aliases: ["nigeria"], lat: 9.0579, lng: 7.4951, iso: "NGA" },
+            { name: "콜롬비아", aliases: ["colombia"], lat: 4.7110, lng: -74.0721, iso: "COL" },
+            { name: "칠레", aliases: ["chile"], lat: -33.4489, lng: -70.6693, iso: "CHL" },
+            { name: "페루", aliases: ["peru"], lat: -12.0464, lng: -77.0428, iso: "PER" },
+            { name: "폴란드", aliases: ["poland"], lat: 52.2297, lng: 21.0122, iso: "POL" },
+            { name: "체코", aliases: ["czech", "체코공화국"], lat: 50.0755, lng: 14.4378, iso: "CZE" },
+            { name: "헝가리", aliases: ["hungary"], lat: 47.4979, lng: 19.0402, iso: "HUN" },
+            { name: "오스트리아", aliases: ["austria"], lat: 48.2082, lng: 16.3738, iso: "AUT" },
+            { name: "우크라이나", aliases: ["ukraine"], lat: 50.4501, lng: 30.5234, iso: "UKR" },
+            { name: "포르투갈", aliases: ["portugal"], lat: 38.7223, lng: -9.1393, iso: "PRT" },
+            { name: "아일랜드", aliases: ["ireland"], lat: 53.3498, lng: -6.2603, iso: "IRL" },
+            { name: "아이슬란드", aliases: ["iceland"], lat: 64.1466, lng: -21.9426, iso: "ISL" },
+            { name: "캄보디아", aliases: ["cambodia"], lat: 11.5564, lng: 104.9282, iso: "KHM" },
+            { name: "라오스", aliases: ["laos"], lat: 17.9757, lng: 102.6331, iso: "LAO" },
+            { name: "미얀마", aliases: ["버마"], lat: 19.7633, lng: 96.0785, iso: "MMR" },
+            { name: "방글라데시", aliases: ["bangladesh"], lat: 23.8103, lng: 90.4125, iso: "BGD" },
+            { name: "스리랑카", aliases: ["srilanka"], lat: 6.9271, lng: 79.8612, iso: "LKA" },
+            { name: "파키스탄", aliases: ["pakistan"], lat: 33.6844, lng: 73.0479, iso: "PAK" },
+            { name: "아프가니스탄", aliases: ["afghanistan"], lat: 34.5553, lng: 69.2075, iso: "AFG" },
+            { name: "이란", aliases: ["iran"], lat: 35.6892, lng: 51.3890, iso: "IRN" },
+            { name: "이라크", aliases: ["iraq"], lat: 33.3152, lng: 44.3661, iso: "IRQ" },
+            { name: "시리아", aliases: ["syria"], lat: 33.5138, lng: 36.2765, iso: "SYR" },
+            { name: "요르단", aliases: ["jordan"], lat: 31.9454, lng: 35.9284, iso: "JOR" },
+            { name: "레바논", aliases: ["lebanon"], lat: 33.8938, lng: 35.5018, iso: "LBN" },
+            { name: "예멘", aliases: ["yemen"], lat: 15.3694, lng: 44.1910, iso: "YEM" },
+            { name: "오만", aliases: ["oman"], lat: 23.5859, lng: 58.4059, iso: "OMN" },
+            { name: "카타르", aliases: ["qatar"], lat: 25.2854, lng: 51.5310, iso: "QAT" },
+            { name: "바레인", aliases: ["bahrain"], lat: 26.2235, lng: 50.5822, iso: "BHR" },
+            { name: "쿠웨이트", aliases: ["kuwait"], lat: 29.3759, lng: 47.9774, iso: "KWT" },
+            { name: "우즈베키스탄", aliases: ["우즈벡"], lat: 41.2995, lng: 69.2401, iso: "UZB" },
+            { name: "카자흐스탄", aliases: ["kazakhstan"], lat: 51.1694, lng: 71.4491, iso: "KAZ" },
+            { name: "타지키스탄", aliases: ["tajikistan"], lat: 38.5598, lng: 68.7870, iso: "TJK" },
+            { name: "키르기스스탄", aliases: ["키르기즈스탄"], lat: 42.8746, lng: 74.5698, iso: "KGZ" },
+            { name: "투르크메니스탄", aliases: ["turkmenistan"], lat: 37.9601, lng: 58.3261, iso: "TKM" },
+            { name: "조지아", aliases: ["그루지야"], lat: 41.7151, lng: 44.8271, iso: "GEO" },
+            { name: "아르메니아", aliases: ["armenia"], lat: 40.1872, lng: 44.5152, iso: "ARM" },
+            { name: "아제르바이잔", aliases: ["azerbaijan"], lat: 40.4093, lng: 49.8671, iso: "AZE" },
+            { name: "에스토니아", aliases: ["estonia"], lat: 59.4370, lng: 24.7536, iso: "EST" },
+            { name: "라트비아", aliases: ["latvia"], lat: 56.9496, lng: 24.1052, iso: "LVA" },
+            { name: "리투아니아", aliases: ["lithuania"], lat: 54.6872, lng: 25.2797, iso: "LTU" },
+            { name: "벨라루스", aliases: ["백러시아"], lat: 53.9045, lng: 27.5615, iso: "BLR" },
+            { name: "몰도바", aliases: ["moldova"], lat: 47.0105, lng: 28.8638, iso: "MDA" },
+            { name: "루마니아", aliases: ["romania"], lat: 44.4268, lng: 26.1025, iso: "ROU" },
+            { name: "불가리아", aliases: ["bulgaria"], lat: 42.6977, lng: 23.3219, iso: "BGR" },
+            { name: "세르비아", aliases: ["serbia"], lat: 44.8125, lng: 20.4612, iso: "SRB" },
+            { name: "몬테네그로", aliases: ["montenegro"], lat: 42.4304, lng: 19.2594, iso: "MNE" },
+            { name: "크로아티아", aliases: ["croatia"], lat: 45.8150, lng: 15.9819, iso: "HRV" },
+            { name: "보스니아 헤르체고비나", aliases: ["보스니아"], lat: 43.8563, lng: 18.4131, iso: "BIH" },
+            { name: "슬로베니아", aliases: ["slovenia"], lat: 46.0569, lng: 14.5058, iso: "SVN" },
+            { name: "북마케도니아", aliases: ["마케도니아"], lat: 42.0024, lng: 21.4361, iso: "MKD" },
+            { name: "알바니아", aliases: ["albania"], lat: 41.3275, lng: 19.8187, iso: "ALB" },
+            { name: "슬로바키아", aliases: ["slovakia"], lat: 48.1486, lng: 17.1077, iso: "SVK" },
+            { name: "룩셈부르크", aliases: ["luxembourg"], lat: 49.6116, lng: 6.1319, iso: "LUX" },
+            { name: "모로코", aliases: ["morocco"], lat: 34.0209, lng: -6.8416, iso: "MAR" },
+            { name: "알제리", aliases: ["algeria"], lat: 36.7538, lng: 3.0588, iso: "DZA" },
+            { name: "튀니지", aliases: ["tunisia"], lat: 36.8065, lng: 10.1815, iso: "TUN" },
+            { name: "리비아", aliases: ["libya"], lat: 32.8872, lng: 13.1913, iso: "LBY" },
+            { name: "수단", aliases: ["sudan"], lat: 15.5007, lng: 32.5599, iso: "SDN" },
+            { name: "에티오피아", aliases: ["ethiopia"], lat: 9.0227, lng: 38.7468, iso: "ETH" },
+            { name: "소말리아", aliases: ["somalia"], lat: 2.0469, lng: 45.3182, iso: "SOM" },
+            { name: "우간다", aliases: ["uganda"], lat: 0.3476, lng: 32.5825, iso: "UGA" },
+            { name: "르완다", aliases: ["rwanda"], lat: -1.9403, lng: 30.0588, iso: "RWA" },
+            { name: "탄자니아", aliases: ["tanzania"], lat: -6.1630, lng: 35.7516, iso: "TZA" },
+            { name: "마다가스카르", aliases: ["madagascar"], lat: -18.8792, lng: 47.5079, iso: "MDG" },
+            { name: "모잠비크", aliases: ["mozambique"], lat: -25.9692, lng: 32.5732, iso: "MOZ" },
+            { name: "잠비아", aliases: ["zambia"], lat: -15.3875, lng: 28.3228, iso: "ZMB" },
+            { name: "짐바브웨", aliases: ["zimbabwe"], lat: -17.8252, lng: 31.0335, iso: "ZWE" },
+            { name: "보츠와나", aliases: ["botswana"], lat: -24.6282, lng: 25.9231, iso: "BWA" },
+            { name: "나미비아", aliases: ["namibia"], lat: -22.5597, lng: 17.0832, iso: "NAM" },
+            { name: "앙골라", aliases: ["angola"], lat: -8.8147, lng: 13.2302, iso: "AGO" },
+            { name: "콩고 민주 공화국", aliases: ["민주콩고", "콩고민주공화국", "콩고"], lat: -4.4419, lng: 15.2663, iso: "COD" },
+            { name: "카메룬", aliases: ["cameroon"], lat: 3.8480, lng: 11.5021, iso: "CMR" },
+            { name: "중앙아프리카 공화국", aliases: ["중아공", "중앙아프리카공화국"], lat: 4.3947, lng: 18.5582, iso: "CAF" },
+            { name: "차드", aliases: ["chad"], lat: 12.1348, lng: 15.0557, iso: "TCD" },
+            { name: "니제르", aliases: ["niger"], lat: 13.5116, lng: 2.1254, iso: "NER" },
+            { name: "말리", aliases: ["mali"], lat: 12.6392, lng: -8.0029, iso: "MLI" },
+            { name: "세네갈", aliases: ["senegal"], lat: 14.7167, lng: -17.4677, iso: "SEN" },
+            { name: "모리타니", aliases: ["mauritania"], lat: 18.0735, lng: -15.9582, iso: "MRT" },
+            { name: "기니", aliases: ["guinea"], lat: 9.5092, lng: -13.7122, iso: "GIN" },
+            { name: "코트디부아르", aliases: ["아이보리코스트"], lat: 6.8276, lng: -5.2893, iso: "CIV" },
+            { name: "가나", aliases: ["ghana"], lat: 5.6037, lng: -0.1870, iso: "GHA" },
+            { name: "과테말라", aliases: ["guatemala"], lat: 14.6349, lng: -90.5069, iso: "GTM" },
+            { name: "엘살바도르", aliases: ["elsalvador"], lat: 13.6929, lng: -89.2182, iso: "SLV" },
+            { name: "온두라스", aliases: ["honduras"], lat: 14.0723, lng: -87.1921, iso: "HND" },
+            { name: "니카라과", aliases: ["nicaragua"], lat: 12.1150, lng: -86.2362, iso: "NIC" },
+            { name: "코스타리카", aliases: ["costarica"], lat: 9.9281, lng: -84.0907, iso: "CRI" },
+            { name: "파나마", aliases: ["panama"], lat: 8.9824, lng: -79.5199, iso: "PAN" },
+            { name: "쿠바", aliases: ["cuba"], lat: 23.1136, lng: -82.3666, iso: "CUB" },
+            { name: "자메이카", aliases: ["jamaica"], lat: 17.9716, lng: -76.7920, iso: "JAM" },
+            { name: "아이티", aliases: ["haiti"], lat: 18.5392, lng: -72.3364, iso: "HTI" },
+            { name: "베네수엘라", aliases: ["venezuela"], lat: 10.4806, lng: -66.9036, iso: "VEN" },
+            { name: "에콰도르", aliases: ["ecuador"], lat: -0.1807, lng: -78.4678, iso: "ECU" },
+            { name: "볼리비아", aliases: ["bolivia"], lat: -16.4897, lng: -68.1193, iso: "BOL" },
+            { name: "파라과이", aliases: ["paraguay"], lat: -25.2637, lng: -57.5759, iso: "PRY" },
+            { name: "우루과이", aliases: ["uruguay"], lat: -34.9011, lng: -56.1645, iso: "URY" }
         ];
 
         const excludedQuizCountries = new Set([
@@ -791,6 +791,134 @@
             "세네갈", "우간다", "세르비아", "알바니아", "모잠비크"
         ]);
         const quizCountries = countryData.filter(country => !excludedQuizCountries.has(country.name));
+
+        // ===== 국가 경계(폴리곤) 기반 랜덤 좌표 샘플링 =====
+        // 국가의 고정된 수도 좌표만 반복 출제하면 쉽게 외워지므로, 번들된 국경 폴리곤
+        // 데이터(country-boundaries.geo.json)를 이용해 해당 국가 영토 내부의 랜덤한
+        // 지점을 뽑아 출제한다. 폴리곤 데이터가 없거나 샘플링에 실패하면 항상 해당
+        // 국가의 수도 좌표(국가 내부임이 보장됨)로 안전하게 대체하여, 국경 밖 좌표가
+        // 출제되는 일이 없도록 한다.
+        let boundaryData = null; // iso3 -> GeoJSON geometry
+        let boundaryDataPromise = null;
+        const countryPartsCache = new Map(); // iso3 -> [{ rings, bbox, weight }]
+
+        function isPointInRing(lng, lat, ring) {
+            let inside = false;
+            for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+                const xi = ring[i][0], yi = ring[i][1];
+                const xj = ring[j][0], yj = ring[j][1];
+                const intersect = ((yi > lat) !== (yj > lat)) &&
+                    (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        function isPointInPolygonRings(lng, lat, rings) {
+            if (!rings || !rings.length || !isPointInRing(lng, lat, rings[0])) return false;
+            for (let i = 1; i < rings.length; i++) {
+                // 내부에 구멍(enclave 등)이 있다면 구멍 안쪽은 영토가 아님
+                if (isPointInRing(lng, lat, rings[i])) return false;
+            }
+            return true;
+        }
+
+        function ringArea(ring) {
+            let area = 0;
+            for (let i = 0, len = ring.length, j = len - 1; i < len; j = i++) {
+                area += (ring[j][0] + ring[i][0]) * (ring[i][1] - ring[j][1]);
+            }
+            return Math.abs(area / 2);
+        }
+
+        function getRingBBox(ring) {
+            let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+            ring.forEach(([lng, lat]) => {
+                if (lng < minLng) minLng = lng;
+                if (lng > maxLng) maxLng = lng;
+                if (lat < minLat) minLat = lat;
+                if (lat > maxLat) maxLat = lat;
+            });
+            return { minLng, maxLng, minLat, maxLat };
+        }
+
+        function buildCountryParts(geometry) {
+            if (!geometry) return [];
+            const polygons = geometry.type === 'Polygon'
+                ? [geometry.coordinates]
+                : geometry.type === 'MultiPolygon'
+                    ? geometry.coordinates
+                    : [];
+            // 섬/다각형 조각마다 넓이로 가중치를 두어, 본토처럼 넓은 조각이 더 자주 선택되도록 한다.
+            return polygons
+                .filter(rings => rings && rings.length && rings[0] && rings[0].length >= 3)
+                .map(rings => ({
+                    rings,
+                    bbox: getRingBBox(rings[0]),
+                    weight: Math.max(ringArea(rings[0]), 1e-9)
+                }));
+        }
+
+        function getCountryParts(iso) {
+            if (!iso || !boundaryData || !boundaryData[iso]) return null;
+            if (!countryPartsCache.has(iso)) {
+                countryPartsCache.set(iso, buildCountryParts(boundaryData[iso]));
+            }
+            return countryPartsCache.get(iso);
+        }
+
+        function loadBoundaryData() {
+            if (boundaryDataPromise) return boundaryDataPromise;
+            boundaryDataPromise = fetch('country-boundaries.geo.json')
+                .then(res => {
+                    if (!res.ok) throw new Error('국경 데이터 응답 오류: ' + res.status);
+                    return res.json();
+                })
+                .then(geojson => {
+                    const map = {};
+                    (geojson.features || []).forEach(f => {
+                        if (f && f.id && f.geometry) map[f.id] = f.geometry;
+                    });
+                    boundaryData = map;
+                    return map;
+                })
+                .catch(err => {
+                    console.error('국가 경계 데이터를 불러오지 못했습니다. 수도 좌표로 대체합니다.', err);
+                    boundaryData = {};
+                    return boundaryData;
+                });
+            return boundaryDataPromise;
+        }
+
+        const MAX_SAMPLE_ATTEMPTS = 500;
+        // 해당 국가 영토 내부의 랜덤 좌표를 뽑는다. 폴리곤 데이터가 없거나(예: 매우 작은
+        // 도시국가) 반복 시도 끝에도 적중하지 못하면, 항상 국가 내부로 보장되는 수도 좌표로
+        // 안전하게 대체한다(국경 밖 좌표가 출제되는 경우는 없다).
+        function sampleRandomPointInCountry(country) {
+            const fallback = { lat: country.lat, lng: country.lng };
+            const parts = getCountryParts(country.iso);
+            if (!parts || !parts.length) return fallback;
+
+            const totalWeight = parts.reduce((sum, p) => sum + p.weight, 0);
+            if (!(totalWeight > 0)) return fallback;
+
+            for (let attempt = 0; attempt < MAX_SAMPLE_ATTEMPTS; attempt++) {
+                let r = Math.random() * totalWeight;
+                let chosen = parts[parts.length - 1];
+                for (const part of parts) {
+                    if (r <= part.weight) { chosen = part; break; }
+                    r -= part.weight;
+                }
+                const { bbox, rings } = chosen;
+                const lng = bbox.minLng + Math.random() * (bbox.maxLng - bbox.minLng);
+                const lat = bbox.minLat + Math.random() * (bbox.maxLat - bbox.minLat);
+                if (isPointInPolygonRings(lng, lat, rings)) {
+                    return { lat, lng };
+                }
+            }
+
+            return fallback;
+        }
 
         const continentMap = {
             Asia: ["대한민국", "북한", "일본", "중국", "대만", "몽골", "인도", "인도네시아", "태국", "베트남", "필리핀", "말레이시아", "싱가포르", "캄보디아", "라오스", "미얀마", "방글라데시", "스리랑카", "파키스탄", "아프가니스탄", "이란", "이라크", "시리아", "요르단", "레바논", "예멘", "오만", "카타르", "바레인", "쿠웨이트", "우즈베키스탄", "카자흐스탄", "타지키스탄", "키르기스스탄", "투르크메니스탄", "사우디아라비아", "아랍에미리트", "이스라엘", "튀르키예"],
@@ -1347,11 +1475,15 @@
             setTimeout(() => { if (reviewMap) reviewMap.invalidateSize(); }, 300);
         }
 
-        function startGame() {
+        async function startGame() {
             clearWrongMarkers();
             // 통계 업데이트 (플레이 횟수)
             userStats.gamesPlayed++;
             saveStats();
+
+            // 국가 영토 내부 랜덤 좌표 출제를 위해 국경 폴리곤 데이터 로드를 보장한다.
+            // (앱 로드 시 미리 fetch를 시작해두므로 보통 즉시 resolve된다.)
+            await loadBoundaryData();
 
             const shuffled = [...quizCountries].sort(() => 0.5 - Math.random());
             gameState.questions = shuffled.slice(0, 10);
@@ -1407,8 +1539,10 @@
                 gameMarker.setOpacity(0);
             }
 
-            gameState.displayedLat = Number(gameState.currentQ.lat.toFixed(2));
-            gameState.displayedLng = Number(gameState.currentQ.lng.toFixed(2));
+            // 국가의 고정된 수도 좌표가 아니라, 해당 국가 영토 내부의 랜덤한 지점을 출제한다.
+            gameState.currentPoint = sampleRandomPointInCountry(gameState.currentQ);
+            gameState.displayedLat = Number(gameState.currentPoint.lat.toFixed(2));
+            gameState.displayedLng = Number(gameState.currentPoint.lng.toFixed(2));
 
             const leftPanel = document.querySelector('.game-left-panel');
             if (leftPanel) leftPanel.scrollTop = 0;
@@ -1482,8 +1616,9 @@
 
         function handleChoiceReview(selectedName, btn) {
             if (selectedName === gameState.currentQ.name) {
-                const lat = gameState.currentQ.lat;
-                const lng = gameState.currentQ.lng;
+                const point = gameState.currentPoint || gameState.currentQ;
+                const lat = point.lat;
+                const lng = point.lng;
                 if (gameMap) {
                     gameMap.flyTo([lat, lng], 5, { duration: 1.2 });
                 }
@@ -1670,16 +1805,17 @@
             }
 
             setTimeout(() => { 
+                const point = gameState.currentPoint || gameState.currentQ;
                 if (gameMap) {
                     gameMap.invalidateSize(); 
-                    const lat = gameState.currentQ.lat;
-                    const lng = gameState.currentQ.lng;
+                    const lat = point.lat;
+                    const lng = point.lng;
                     gameMap.flyTo([lat, lng], 5, { duration: 1.5 });
                 }
                 renderGameCoords();
                 if (gameMarker) {
-                    const lat = gameState.currentQ.lat;
-                    const lng = gameState.currentQ.lng;
+                    const lat = point.lat;
+                    const lng = point.lng;
                     gameMarker.setLatLng([lat, lng]);
                     gameMarker.setOpacity(1);
                     
@@ -2052,6 +2188,8 @@
         window.onload = () => {
             initSettings();
             initMaps();
+            // 게임 시작 전에 미리 국경 폴리곤 데이터를 받아두어 첫 문제부터 바로 사용할 수 있게 한다.
+            loadBoundaryData();
             document.getElementById('text-answer')?.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') submitTextAnswer();
             });
