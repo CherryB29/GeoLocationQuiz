@@ -642,9 +642,9 @@
     <script>
         const countryData = [
             { name: "대한민국", aliases: ["한국", "남한", "코리아", "korea", "대한민국"], lat: 37.5665, lng: 126.9780 },
-            { name: "조선민주주의인민공화국", aliases: ["북한", "북조선", "조선"], lat: 39.0392, lng: 125.7625 },
+            { name: "북한", aliases: ["조선민주주의인민공화국", "북한", "북조선", "조선"], lat: 39.0392, lng: 125.7625 },
             { name: "일본", aliases: ["japan", "일국"], lat: 35.6762, lng: 139.6503 },
-            { name: "중화인민공화국", aliases: ["중국", "china"], lat: 39.9042, lng: 116.4074 },
+            { name: "중국", aliases: ["중화인민공화국", "중국", "china"], lat: 39.9042, lng: 116.4074 },
             { name: "대만", aliases: ["타이완", "taiwan"], lat: 25.0330, lng: 121.5654 },
             { name: "몽골", aliases: ["몽고", "mongolia"], lat: 47.9212, lng: 106.9186 },
             { name: "미국", aliases: ["미합중국", "usa", "us", "america"], lat: 38.9072, lng: -77.0369 },
@@ -778,8 +778,14 @@
             { name: "우루과이", aliases: ["uruguay"], lat: -34.9011, lng: -56.1645 }
         ];
 
+        const excludedQuizCountries = new Set([
+            "온두라스", "코스타리카", "벨라루스", "몬테네그로", "카메룬", "몰도바",
+            "엘살바도르", "니카라과", "북마케도니아", "짐바브웨", "과테말라", "중앙아프리카 공화국"
+        ]);
+        const quizCountries = countryData.filter(country => !excludedQuizCountries.has(country.name));
+
         const continentMap = {
-            Asia: ["대한민국", "조선민주주의인민공화국", "일본", "중화인민공화국", "대만", "몽골", "인도", "인도네시아", "태국", "베트남", "필리핀", "말레이시아", "싱가포르", "캄보디아", "라오스", "미얀마", "방글라데시", "스리랑카", "파키스탄", "아프가니스탄", "이란", "이라크", "시리아", "요르단", "레바논", "예멘", "오만", "카타르", "바레인", "쿠웨이트", "우즈베키스탄", "카자흐스탄", "타지키스탄", "키르기스스탄", "투르크메니스탄", "사우디아라비아", "아랍에미리트", "이스라엘", "튀르키예"],
+            Asia: ["대한민국", "북한", "일본", "중국", "대만", "몽골", "인도", "인도네시아", "태국", "베트남", "필리핀", "말레이시아", "싱가포르", "캄보디아", "라오스", "미얀마", "방글라데시", "스리랑카", "파키스탄", "아프가니스탄", "이란", "이라크", "시리아", "요르단", "레바논", "예멘", "오만", "카타르", "바레인", "쿠웨이트", "우즈베키스탄", "카자흐스탄", "타지키스탄", "키르기스스탄", "투르크메니스탄", "사우디아라비아", "아랍에미리트", "이스라엘", "튀르키예"],
             Europe: ["영국", "프랑스", "독일", "이탈리아", "스페인", "러시아", "스위스", "네덜란드", "벨기에", "스웨덴", "노르웨이", "덴마크", "핀란드", "그리스", "폴란드", "체코", "헝가리", "오스트리아", "우크라이나", "포르투갈", "아일랜드", "아이슬란드", "조지아", "아르메니아", "아제르바이잔", "에스토니아", "라트비아", "리투아니아", "벨라루스", "몰도바", "루마니아", "불가리아", "세르비아", "몬테네그로", "크로아티아", "보스니아 헤르체고비나", "슬로베니아", "북마케도니아", "알바니아", "슬로바키아", "룩셈부르크"],
             NorthAmerica: ["미국", "캐나다", "멕시코", "과테말라", "엘살바도르", "온두라스", "니카라과", "코스타리카", "파나마", "쿠바", "자메이카", "아이티"],
             SouthAmerica: ["브라질", "아르헨티나", "콜롬비아", "칠레", "페루", "베네수엘라", "에콰도르", "볼리비아", "파라과이", "우루과이"],
@@ -1301,7 +1307,7 @@
             userStats.gamesPlayed++;
             saveStats();
 
-            const shuffled = [...countryData].sort(() => 0.5 - Math.random());
+            const shuffled = [...quizCountries].sort(() => 0.5 - Math.random());
             gameState.questions = shuffled.slice(0, 10);
             gameState.round = 0;
             gameState.score = 0;
@@ -1399,7 +1405,7 @@
             const current = gameState.currentQ;
             
             // 거리 기반으로 국가 목록 정렬 (가까운 국가 우선)
-            let otherCountries = countryData.filter(c => c.name !== current.name).map(c => {
+            let otherCountries = quizCountries.filter(c => c.name !== current.name).map(c => {
                 return { ...c, dist: getDistance(current.lat, current.lng, c.lat, c.lng) };
             });
             otherCountries.sort((a, b) => a.dist - b.dist);
@@ -1484,7 +1490,7 @@
                 }
                 
                 // 가깝고도 먼 이웃 업적 체크 (북한을 맞췄을 때)
-                if (gameState.currentQ.name === '조선민주주의인민공화국') {
+                if (gameState.currentQ.name === '북한') {
                     unlockAchievement('CLOSE_CALL');
                 }
 
@@ -1547,7 +1553,7 @@
                 }
                 
                 // 가깝고도 먼 이웃 업적 체크 (북한을 맞췄을 때)
-                if (gameState.currentQ.name === '조선민주주의인민공화국') {
+                if (gameState.currentQ.name === '북한') {
                     unlockAchievement('CLOSE_CALL');
                 }
 
